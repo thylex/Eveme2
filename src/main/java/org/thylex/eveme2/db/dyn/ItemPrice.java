@@ -3,17 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.thylex.eveme2.db.sde;
+package org.thylex.eveme2.db.dyn;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -21,60 +19,32 @@ import javax.persistence.Table;
  * @author thyle
  */
 @Entity
-@Table(name = "invItems")
-public class InvItems implements Serializable {
+@Table(name = "ItemPrices")
+public class ItemPrice implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "itemID")
+    @Column(name = "ItemID")
     private Long itemID;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "typeID")
-    private InvTypes invType;
-    private Long ownerID;
-    private Long locationID;
-    private Long flagID;
-    private Long quantity;
 
-    public InvTypes getInvType() {
-        return invType;
+    public Double getPrice() {
+        return price;
     }
 
-    public void setInvType(InvTypes invType) {
-        this.invType = invType;
-    }
-    public Long getOwnerID() {
-        return ownerID;
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
-    public void setOwnerID(Long ownerID) {
-        this.ownerID = ownerID;
+    public Date getCheckedAt() {
+        return checkedAt;
     }
 
-    public Long getLocationID() {
-        return locationID;
+    public void setCheckedAt(Date checkedAt) {
+        this.checkedAt = checkedAt;
     }
-
-    public void setLocationID(Long locationID) {
-        this.locationID = locationID;
-    }
-
-    public Long getFlagID() {
-        return flagID;
-    }
-
-    public void setFlagID(Long flagID) {
-        this.flagID = flagID;
-    }
-
-    public Long getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Long quantity) {
-        this.quantity = quantity;
-    }
+    private Double price;
+    private Date checkedAt;
 
     public Long getItemID() {
         return itemID;
@@ -94,10 +64,10 @@ public class InvItems implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof InvItems)) {
+        if (!(object instanceof ItemPrice)) {
             return false;
         }
-        InvItems other = (InvItems) object;
+        ItemPrice other = (ItemPrice) object;
         if ((this.itemID == null && other.itemID != null) || (this.itemID != null && !this.itemID.equals(other.itemID))) {
             return false;
         }
@@ -106,7 +76,7 @@ public class InvItems implements Serializable {
 
     @Override
     public String toString() {
-        return "org.thylex.eveme2.db.sde.InvItem[ id=" + itemID + " ]";
+        return "org.thylex.eveme2.db.dyn.ItemPrice[ id=" + itemID + " ]";
     }
     
 }

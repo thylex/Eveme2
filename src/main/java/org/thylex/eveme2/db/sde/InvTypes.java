@@ -30,20 +30,20 @@ public class InvTypes implements Serializable {
     private Long typeID;
     @OneToMany(mappedBy = "invType")
     private Set<InvItems> invItems;
-    private Integer groupID;
+    private Long groupID;
     private String typeName;
     private String description;
     private Float mass;
     private Float volume;
     private Float capacity;
-    private Integer portionSize;
-    private Integer raceID;
+    private Long portionSize;
+    private Long raceID;
     private Float basePrice;
     private Boolean published;
-    private Integer marketGroupID;
-    private Integer iconID;
-    private Integer soundID;
-    private Integer graphicID;
+    private Long marketGroupID;
+    private Long iconID;
+    private Long soundID;
+    private Long graphicID;
 
     public Set<InvItems> getInvItems() {
         return invItems;
@@ -53,11 +53,11 @@ public class InvTypes implements Serializable {
         this.invItems = invItems;
     }
 
-    public Integer getGroupID() {
+    public Long getGroupID() {
         return groupID;
     }
 
-    public void setGroupID(Integer groupID) {
+    public void setGroupID(Long groupID) {
         this.groupID = groupID;
     }
 
@@ -101,19 +101,19 @@ public class InvTypes implements Serializable {
         this.capacity = capacity;
     }
 
-    public Integer getPortionSize() {
+    public Long getPortionSize() {
         return portionSize;
     }
 
-    public void setPortionSize(Integer portionSize) {
+    public void setPortionSize(Long portionSize) {
         this.portionSize = portionSize;
     }
 
-    public Integer getRaceID() {
+    public Long getRaceID() {
         return raceID;
     }
 
-    public void setRaceID(Integer raceID) {
+    public void setRaceID(Long raceID) {
         this.raceID = raceID;
     }
 
@@ -133,35 +133,35 @@ public class InvTypes implements Serializable {
         this.published = published;
     }
 
-    public Integer getMarketGroupID() {
+    public Long getMarketGroupID() {
         return marketGroupID;
     }
 
-    public void setMarketGroupID(Integer marketGroupID) {
+    public void setMarketGroupID(Long marketGroupID) {
         this.marketGroupID = marketGroupID;
     }
 
-    public Integer getIconID() {
+    public Long getIconID() {
         return iconID;
     }
 
-    public void setIconID(Integer iconID) {
+    public void setIconID(Long iconID) {
         this.iconID = iconID;
     }
 
-    public Integer getSoundID() {
+    public Long getSoundID() {
         return soundID;
     }
 
-    public void setSoundID(Integer soundID) {
+    public void setSoundID(Long soundID) {
         this.soundID = soundID;
     }
 
-    public Integer getGraphicID() {
+    public Long getGraphicID() {
         return graphicID;
     }
 
-    public void setGraphicID(Integer graphicID) {
+    public void setGraphicID(Long graphicID) {
         this.graphicID = graphicID;
     }
 

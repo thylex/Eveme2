@@ -20,7 +20,6 @@ import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -29,6 +28,7 @@ import org.apache.commons.compress.compressors.CompressorInputStream;
 import org.apache.commons.compress.compressors.CompressorStreamFactory;
 import org.thylex.eveme2.app.App;
 import org.thylex.eveme2.db.sde.*;
+import org.thylex.eveme2.db.dyn.*;
 
 /**
  *
@@ -45,8 +45,8 @@ public class Db {
     
     public Db(App application) {
         app = application;
-        staticDbFile = new File(app.getAppDir().getAbsolutePath().concat("\\").concat(staticDbFileName));
-        dynDbFile = new File(app.getAppDir().getAbsolutePath().concat("\\").concat(dynDbFileName));
+        staticDbFile = new File(app.getSettings().getProp("AppDir").concat("\\").concat(staticDbFileName));
+        dynDbFile = new File(app.getSettings().getProp("AppDir").concat("\\").concat(dynDbFileName));
         
         if (! CheckFilesForStart()) {
             System.out.println("Files missing during startup");
@@ -70,6 +70,14 @@ public class Db {
 
     }
     
+    public EntityManager getSdeEntityManager() {
+        return sdeFactory.createEntityManager();
+    }
+    
+    public EntityManager getDynEntityManager() {
+        return dynFactory.createEntityManager();
+    }
+    
     public void CloseAndExit() {
         if (sdeFactory.isOpen()) {
             sdeFactory.close();
@@ -86,7 +94,7 @@ public class Db {
         if (staticDbFile.exists()) {
             staticOK = true;
         } else {
-            staticOK = DownloadNewStaticDump(app.getAppDir());
+            staticOK = DownloadNewStaticDump(app.getSettings().getProp("AppDir"));
         }
         
         try {
@@ -102,14 +110,8 @@ public class Db {
         return staticOK && dynOK;
     }
     
-    public InvItems GetItemByID(Integer ItemID) {
-        EntityManager em = sdeFactory.createEntityManager();
-        Query q = em.createQuery("Select i from InvItems i where i.itemID = :id");
-        q.setParameter("id", ItemID);
-        return (InvItems) q.getSingleResult();
-    }
-    
-    private boolean DownloadNewStaticDump(File basePath) {
+    private boolean DownloadNewStaticDump(String path) {
+        File basePath = new File(path);
         String URL = "https://www.fuzzwork.co.uk/dump/sde-20210427-TRANQUILITY/eve.db.bz2";
         Path dlPath = Path.of(basePath.getAbsolutePath().concat("\\").concat("eve.db.bz2"));
         OkHttpClient client = new OkHttpClient();
@@ -147,7 +149,7 @@ public class Db {
 
         // Uncompress downloaded file
         System.out.println("Uncompressing downloaded file");
-        File oFile = new File(app.getAppDir().getAbsolutePath().concat("\\".concat("eve.db")));
+        File oFile = new File(app.getSettings().getProp("AppDir").concat("\\".concat("eve.db")));
         try {
             // Set up input
             FileInputStream fin = new FileInputStream(dlFile);

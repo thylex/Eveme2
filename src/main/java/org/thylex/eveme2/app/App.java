@@ -12,20 +12,24 @@ import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.thylex.eveme2.db.Db;
-import org.thylex.eveme2.gui.MainFrame;
+import org.thylex.eveme2.db.dynWorker;
+import org.thylex.eveme2.db.sdeWorker;
+import org.thylex.eveme2.gui.EvemeFrame;
 
 /**
  *
  * @author thyle
  */
 public class App {
-    private File AppDir = null;
     private Db DB = null;
-    private MainFrame gui = null;
+    private EvemeFrame gui = null;
     private EvemeSettings Settings = null;
+    private sdeWorker SDE = null;
+    private dynWorker DYN = null;
 
     public App() {
         // Set base directory for all application related files, create if it doesn't exist
+        File AppDir = null;
         if ("Windows 10".equals(System.getProperty("os.name"))) {
             String homedir = System.getProperty("user.home").concat("\\Documents\\EveMe2");
             Path path = Path.of(homedir);
@@ -37,6 +41,7 @@ public class App {
                     AppDir = path.toFile();
                 } catch (IOException ex) {
                     Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+                    System.exit(1);
                 }
             }
             //System.out.print(AppDir.getPath().toString());
@@ -45,19 +50,27 @@ public class App {
         // Initialize databases
         Settings = new EvemeSettings(AppDir.toString());
         DB = new Db(this);
-        gui = new MainFrame(this);
+        SDE = new sdeWorker(DB.getSdeEntityManager());
+        DYN = new dynWorker(DB.getDynEntityManager());
+        gui = new EvemeFrame(this);
         
-    }
-    
-    public File getAppDir() {
-        return AppDir;
     }
     
     public EvemeSettings getSettings() {
         return this.Settings;
     }
     
+    public sdeWorker getSdeWorker() {
+        return this.SDE;
+    }
+    
+    public dynWorker getDynWorker() {
+        return this.DYN;
+    }
+    
     public void CloseAndExit() {
+        SDE.Close();
+        DYN.Close();
         DB.CloseAndExit();
         gui.dispose();
     }
