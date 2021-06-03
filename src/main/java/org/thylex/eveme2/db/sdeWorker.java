@@ -5,8 +5,10 @@
  */
 package org.thylex.eveme2.db;
 
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import org.thylex.eveme2.db.sde.InvCategories;
 import org.thylex.eveme2.db.sde.InvItems;
 
 /**
@@ -23,6 +25,12 @@ public class sdeWorker {
         Query q = em.createQuery("Select i from InvItems i where i.itemID = :id");
         q.setParameter("id", ItemID);
         return (InvItems) q.getSingleResult();
+    }
+    
+    public InvCategories findCategoriesByName(String name){
+        Query q = em.createQuery("SELECT i FROM InvCategories i WHERE i.categoryName = :name");
+        q.setParameter("name", name);
+        return (InvCategories) q.getSingleResult();
     }
     
     public void Close() {

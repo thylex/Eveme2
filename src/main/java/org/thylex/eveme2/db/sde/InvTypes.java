@@ -6,12 +6,15 @@
 package org.thylex.eveme2.db.sde;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -28,9 +31,12 @@ public class InvTypes implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "typeID")
     private Long typeID;
-    @OneToMany(mappedBy = "invType")
-    private Set<InvItems> invItems;
-    private Long groupID;
+    @OneToMany(mappedBy = "invType", fetch = FetchType.LAZY)
+    private List<InvItems> invItems;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "groupID")
+    private InvGroups invGroup;
+    //private Long groupID;
     private String typeName;
     private String description;
     private Float mass;
@@ -45,21 +51,29 @@ public class InvTypes implements Serializable {
     private Long soundID;
     private Long graphicID;
 
-    public Set<InvItems> getInvItems() {
+    public List<InvItems> getInvItems() {
         return invItems;
     }
 
-    public void setInvItems(Set<InvItems> invItems) {
+    public void setInvItems(List<InvItems> invItems) {
         this.invItems = invItems;
     }
 
-    public Long getGroupID() {
-        return groupID;
+    public InvGroups getInvGroup() {
+        return invGroup;
     }
 
-    public void setGroupID(Long groupID) {
-        this.groupID = groupID;
+    public void setInvGroup(InvGroups invGroup) {
+        this.invGroup = invGroup;
     }
+
+//    public Long getGroupID() {
+//        return groupID;
+//    }
+//
+//    public void setGroupID(Long groupID) {
+//        this.groupID = groupID;
+//    }
 
     public String getTypeName() {
         return typeName;

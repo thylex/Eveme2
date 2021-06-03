@@ -27,6 +27,8 @@ public class ItemPrice implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ItemID")
     private Long itemID;
+    private Double price;
+    private Date checkedAt;
 
     public Double getPrice() {
         return price;
@@ -43,8 +45,6 @@ public class ItemPrice implements Serializable {
     public void setCheckedAt(Date checkedAt) {
         this.checkedAt = checkedAt;
     }
-    private Double price;
-    private Date checkedAt;
 
     public Long getItemID() {
         return itemID;

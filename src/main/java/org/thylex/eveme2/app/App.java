@@ -13,6 +13,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.thylex.eveme2.db.Db;
 import org.thylex.eveme2.db.dynWorker;
+import org.thylex.eveme2.db.sde.InvCategories;
+import org.thylex.eveme2.db.sde.InvGroups;
 import org.thylex.eveme2.db.sdeWorker;
 import org.thylex.eveme2.gui.EvemeFrame;
 
@@ -52,8 +54,17 @@ public class App {
         DB = new Db(this);
         SDE = new sdeWorker(DB.getSdeEntityManager());
         DYN = new dynWorker(DB.getDynEntityManager());
+        this.testingShit();
         gui = new EvemeFrame(this);
         
+    }
+    
+    public void testingShit() {
+        InvCategories BPCat = SDE.findCategoriesByName("Blueprint");
+        System.out.println(BPCat.getInvGroups().size());
+        for (InvGroups group : BPCat.getInvGroups()) {
+            System.out.println(group.getGroupName() + ": " + group.getInvTypes().size());
+        }
     }
     
     public EvemeSettings getSettings() {

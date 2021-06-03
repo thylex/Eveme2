@@ -24,7 +24,13 @@ public class eveme {
         try {
             // TODO code application logic here
             //System.getProperties().list(System.out);
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(eveme.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
