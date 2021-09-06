@@ -9,18 +9,14 @@ import org.thylex.eveme2.gui.bpValue.BlueprintValuePanel;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import org.thylex.eveme2.app.App;
 import org.thylex.eveme2.db.sde.IndActivityTypes;
 import org.thylex.eveme2.db.sde.IndustryActivityMaterials;
-import org.thylex.eveme2.db.sde.InvItems;
 import org.thylex.eveme2.db.sde.InvTypes;
 
 /**

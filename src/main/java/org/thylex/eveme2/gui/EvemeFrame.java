@@ -43,7 +43,6 @@ public class EvemeFrame extends javax.swing.JFrame {
         tabPane.setMinimumSize(new Dimension(500, 300));
         
         // Add Tabbed Pane to base Frame
-        //this.getContentPane().setLayout(new GridLayout(1, 1));
         this.getContentPane().setLayout(new BorderLayout());
         this.getContentPane().add(tabPane, BorderLayout.CENTER);
         
@@ -53,7 +52,6 @@ public class EvemeFrame extends javax.swing.JFrame {
             String[] posData = pos.split(",");
             this.setBounds(Integer.parseInt(posData[0]), Integer.parseInt(posData[1]), Integer.parseInt(posData[2]), Integer.parseInt(posData[3]));
         }
-        //doLayout();
         this.validate();
 
         this.setVisible(true);
