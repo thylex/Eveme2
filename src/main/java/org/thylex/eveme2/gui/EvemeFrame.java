@@ -5,6 +5,14 @@
  */
 package org.thylex.eveme2.gui;
 
+import org.thylex.eveme2.gui.bpValue.bpValSplit;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import org.apache.commons.lang3.StringUtils;
 import org.thylex.eveme2.app.App;
 
 /**
@@ -14,6 +22,8 @@ import org.thylex.eveme2.app.App;
 public class EvemeFrame extends javax.swing.JFrame {
 
     private App app;
+    private JTabbedPane tabPane = null;
+    private JPanel bpValue = null;
     /**
      * Creates new form MainFrame
      */
@@ -24,7 +34,34 @@ public class EvemeFrame extends javax.swing.JFrame {
     public EvemeFrame(App appl) {
         app = appl;
         initComponents();
+        setTitle("EveMe 2 - EVE Online Industry helper app");
+        
+        tabPane = new JTabbedPane(JTabbedPane.TOP);
+        
+        //tabPane.add("BP Value", new BlueprintValuePanel(app));
+        tabPane.add("BP Value", new bpValSplit(app));
+        tabPane.setMinimumSize(new Dimension(500, 300));
+        
+        // Add Tabbed Pane to base Frame
+        //this.getContentPane().setLayout(new GridLayout(1, 1));
+        this.getContentPane().setLayout(new BorderLayout());
+        this.getContentPane().add(tabPane, BorderLayout.CENTER);
+        
+        // Restore size and position
+        String pos = app.getSettings().getProp("AppPos");
+        if (pos != null && ! StringUtils.isBlank(pos)) {
+            String[] posData = pos.split(",");
+            this.setBounds(Integer.parseInt(posData[0]), Integer.parseInt(posData[1]), Integer.parseInt(posData[2]), Integer.parseInt(posData[3]));
+        }
+        //doLayout();
+        this.validate();
+
         this.setVisible(true);
+        this.addWindowListener(new EvemeFrameListener());
+    }
+    
+    public void CloseAndExit() {
+        app.CloseAndExit();
     }
     
     /**
@@ -44,7 +81,7 @@ public class EvemeFrame extends javax.swing.JFrame {
 
         jMenu3.setText("jMenu3");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("EveME 2");
 
         jMenu1.setText("File");
@@ -125,4 +162,45 @@ public class EvemeFrame extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     // End of variables declaration//GEN-END:variables
+}
+
+class EvemeFrameListener implements WindowListener {
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        EvemeFrame ef = (EvemeFrame) e.getSource();
+        ef.CloseAndExit();
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
 }

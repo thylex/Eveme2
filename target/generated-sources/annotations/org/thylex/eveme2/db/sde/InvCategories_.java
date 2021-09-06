@@ -6,7 +6,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 import org.thylex.eveme2.db.sde.InvGroups;
 
-@Generated(value="org.eclipse.persistence.internal.jpa.modelgen.CanonicalModelProcessor", date="2021-06-03T23:20:30", comments="EclipseLink-2.7.8.v20201217-rNA")
+@Generated(value="org.eclipse.persistence.internal.jpa.modelgen.CanonicalModelProcessor", date="2021-09-06T15:58:42", comments="EclipseLink-2.7.8.v20201217-rNA")
 @StaticMetamodel(InvCategories.class)
 public class InvCategories_ { 
 

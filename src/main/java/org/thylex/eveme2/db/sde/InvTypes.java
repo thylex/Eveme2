@@ -30,26 +30,26 @@ public class InvTypes implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "typeID")
-    private Long typeID;
+    private Integer typeID;
     @OneToMany(mappedBy = "invType", fetch = FetchType.LAZY)
     private List<InvItems> invItems;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "groupID")
     private InvGroups invGroup;
-    //private Long groupID;
+    //private Integer groupID;
     private String typeName;
     private String description;
     private Float mass;
     private Float volume;
     private Float capacity;
-    private Long portionSize;
-    private Long raceID;
+    private Integer portionSize;
+    private Integer raceID;
     private Float basePrice;
     private Boolean published;
-    private Long marketGroupID;
-    private Long iconID;
-    private Long soundID;
-    private Long graphicID;
+    private Integer marketGroupID;
+    private Integer iconID;
+    private Integer soundID;
+    private Integer graphicID;
 
     public List<InvItems> getInvItems() {
         return invItems;
@@ -67,11 +67,11 @@ public class InvTypes implements Serializable {
         this.invGroup = invGroup;
     }
 
-//    public Long getGroupID() {
+//    public Integer getGroupID() {
 //        return groupID;
 //    }
 //
-//    public void setGroupID(Long groupID) {
+//    public void setGroupID(Integer groupID) {
 //        this.groupID = groupID;
 //    }
 
@@ -115,19 +115,19 @@ public class InvTypes implements Serializable {
         this.capacity = capacity;
     }
 
-    public Long getPortionSize() {
+    public Integer getPortionSize() {
         return portionSize;
     }
 
-    public void setPortionSize(Long portionSize) {
+    public void setPortionSize(Integer portionSize) {
         this.portionSize = portionSize;
     }
 
-    public Long getRaceID() {
+    public Integer getRaceID() {
         return raceID;
     }
 
-    public void setRaceID(Long raceID) {
+    public void setRaceID(Integer raceID) {
         this.raceID = raceID;
     }
 
@@ -147,43 +147,43 @@ public class InvTypes implements Serializable {
         this.published = published;
     }
 
-    public Long getMarketGroupID() {
+    public Integer getMarketGroupID() {
         return marketGroupID;
     }
 
-    public void setMarketGroupID(Long marketGroupID) {
+    public void setMarketGroupID(Integer marketGroupID) {
         this.marketGroupID = marketGroupID;
     }
 
-    public Long getIconID() {
+    public Integer getIconID() {
         return iconID;
     }
 
-    public void setIconID(Long iconID) {
+    public void setIconID(Integer iconID) {
         this.iconID = iconID;
     }
 
-    public Long getSoundID() {
+    public Integer getSoundID() {
         return soundID;
     }
 
-    public void setSoundID(Long soundID) {
+    public void setSoundID(Integer soundID) {
         this.soundID = soundID;
     }
 
-    public Long getGraphicID() {
+    public Integer getGraphicID() {
         return graphicID;
     }
 
-    public void setGraphicID(Long graphicID) {
+    public void setGraphicID(Integer graphicID) {
         this.graphicID = graphicID;
     }
 
-    public Long getTypeID() {
+    public Integer getTypeID() {
         return typeID;
     }
 
-    public void setTypeID(Long typeID) {
+    public void setTypeID(Integer typeID) {
         this.typeID = typeID;
     }
 

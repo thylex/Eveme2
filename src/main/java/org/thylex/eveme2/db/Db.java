@@ -13,7 +13,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,8 +33,6 @@ import org.apache.commons.compress.compressors.CompressorException;
 import org.apache.commons.compress.compressors.CompressorInputStream;
 import org.apache.commons.compress.compressors.CompressorStreamFactory;
 import org.thylex.eveme2.app.App;
-import org.thylex.eveme2.db.sde.*;
-import org.thylex.eveme2.db.dyn.*;
 
 /**
  *
@@ -36,7 +40,7 @@ import org.thylex.eveme2.db.dyn.*;
  */
 public class Db {
     private App app = null;
-    private final String staticDbFileName = "eve-sde-20210427.db";
+    private final String staticDbFileName = "eve-sde.db";
     private File staticDbFile = null;
     private final String dynDbFileName = "eveme-cache.db";
     private File dynDbFile = null;
@@ -112,7 +116,7 @@ public class Db {
     
     private boolean DownloadNewStaticDump(String path) {
         File basePath = new File(path);
-        String URL = "https://www.fuzzwork.co.uk/dump/sde-20210427-TRANQUILITY/eve.db.bz2";
+        String URL = "https://www.fuzzwork.co.uk/dump/latest/eve.db.bz2";
         Path dlPath = Path.of(basePath.getAbsolutePath().concat("\\").concat("eve.db.bz2"));
         OkHttpClient client = new OkHttpClient();
         Response resp = null;
@@ -183,7 +187,104 @@ public class Db {
             staticDbFile.delete();
         }
         oFile.renameTo(staticDbFile);
+        
+        // Fix tables missing primary keys
+        FixSDE();
 
         return true;
+    }
+    
+    private void FixSDE() {
+        Connection sdeConn = null;
+        String sdeUrl = "jdbc:sqlite:" + staticDbFile.getAbsolutePath();
+        
+        List<String> IndActMats = new ArrayList<>(List.of(
+                "PRAGMA foreign_keys=off;",
+                "BEGIN TRANSACTION;",
+                "ALTER TABLE industryActivityMaterials RENAME TO industryActivityMaterials_old;",
+                "CREATE TABLE industryActivityMaterials (typeID INTEGER,activityID INTEGER,materialTypeID INTEGER,quantity INTEGER,indActMatID INTEGER PRIMARY KEY);",
+                "INSERT INTO industryActivityMaterials (typeID,activityID,materialTypeID,quantity) SELECT * FROM industryActivityMaterials_old;",
+                "COMMIT;",
+                "PRAGMA foreign_keys=on;"
+        ));
+        List<String> IndActProb = new ArrayList<>(List.of(
+                "PRAGMA foreign_keys=off;",
+                "BEGIN TRANSACTION;",
+                "ALTER TABLE industryActivityProbabilities RENAME TO industryActivityProbabilities_old;",
+                "CREATE TABLE industryActivityProbabilities (typeID INTEGER,activityID INTEGER,productTypeID INTEGER,probability DECIMAL(3,2),indActProbID INTEGER PRIMARY KEY);",
+                "INSERT INTO industryActivityProbabilities (typeID,activityID,productTypeID,probability) SELECT * FROM industryActivityProbabilities_old;",
+                "COMMIT;",
+                "PRAGMA foreign_keys=on;"
+        ));
+        List<String> IndActProds = new ArrayList<>(List.of(
+                "PRAGMA foreign_keys=off;",
+                "BEGIN TRANSACTION;",
+                "ALTER TABLE industryActivityProducts RENAME TO industryActivityProducts_old;",
+                "CREATE TABLE industryActivityProducts (typeID INTEGER,activityID INTEGER,productTypeID INTEGER,quantity INTEGER,indActProdID INTEGER PRIMARY KEY);",
+                "INSERT INTO industryActivityProducts (typeID,activityID,productTypeID,quantity) SELECT * FROM industryActivityProducts_old;",
+                "COMMIT;",
+                "PRAGMA foreign_keys=on;"
+        ));
+        List<String> IndActRaces = new ArrayList<>(List.of(
+                "PRAGMA foreign_keys=off;",
+                "BEGIN TRANSACTION;",
+                "ALTER TABLE industryActivityRaces RENAME TO industryActivityRaces_old;",
+                "CREATE TABLE industryActivityRaces (typeID INTEGER,activityID INTEGER,productTypeID INTEGER,raceID INTEGER,indActRaceID INTEGER PRIMARY KEY);",
+                "INSERT INTO industryActivityRaces (typeID,activityID,productTypeID,raceID) SELECT * FROM industryActivityRaces_old;",
+                "COMMIT;",
+                "PRAGMA foreign_keys=on;"
+        ));
+        List<String> IndActSkills = new ArrayList<>(List.of(
+                "PRAGMA foreign_keys=off;",
+                "BEGIN TRANSACTION;",
+                "ALTER TABLE industryActivitySkills RENAME TO industryActivitySkills_old;",
+                "CREATE TABLE industryActivitySkills (typeID INTEGER,activityID INTEGER,skillID INTEGER,level INTEGER,indActSkillID INTEGER PRIMARY KEY);",
+                "INSERT INTO industryActivitySkills (typeID,activityID,skillID,level) SELECT * FROM industryActivitySkills_old;",
+                "COMMIT;",
+                "PRAGMA foreign_keys=on;"
+        ));
+        
+        try {
+            sdeConn = DriverManager.getConnection(sdeUrl);
+            
+            // Fixing industryActivityMaterials
+            for (String line : IndActMats) {
+//                System.out.println("Executing line: " + line);
+                Statement stmt = sdeConn.createStatement();
+                stmt.execute(line);
+            }
+            
+            // Fixing industryActivityProbabilities
+            for (String line : IndActProb) {
+//                System.out.println("Executing line: " + line);
+                Statement stmt = sdeConn.createStatement();
+                stmt.execute(line);
+            }
+            
+            // Fixing industryActivityProducts
+            for (String line : IndActProds) {
+//                System.out.println("Executing line: " + line);
+                Statement stmt = sdeConn.createStatement();
+                stmt.execute(line);
+            }
+            
+            // Fixing industryActivityRaces
+            for (String line : IndActRaces) {
+//                System.out.println("Executing line: " + line);
+                Statement stmt = sdeConn.createStatement();
+                stmt.execute(line);
+            }
+            
+            // Fixing industryActivitySkills
+            for (String line : IndActSkills) {
+//                System.out.println("Executing line: " + line);
+                Statement stmt = sdeConn.createStatement();
+                stmt.execute(line);
+            }
+            
+            sdeConn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Db.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

@@ -4,6 +4,14 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>org.thylex.eveme2.db.sde.InvCategories</class>
     <class>org.thylex.eveme2.db.sde.InvGroups</class>
+    <class>org.thylex.eveme2.db.sde.ChrRaces</class>
+    <class>org.thylex.eveme2.db.sde.IndustryActivity</class>
+    <class>org.thylex.eveme2.db.sde.IndustryActivityMaterials</class>
+    <class>org.thylex.eveme2.db.sde.IndustryActivityProbabilities</class>
+    <class>org.thylex.eveme2.db.sde.IndustryActivityProducts</class>
+    <class>org.thylex.eveme2.db.sde.IndustryActivityRaces</class>
+    <class>org.thylex.eveme2.db.sde.IndustryActivitySkills</class>
+    <class>org.thylex.eveme2.db.sde.IndustryBlueprints</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <class>org.thylex.eveme2.db.sde.InvItems</class>
     <class>org.thylex.eveme2.db.sde.InvTypes</class>

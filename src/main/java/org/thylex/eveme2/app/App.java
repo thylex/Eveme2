@@ -5,16 +5,23 @@
  */
 package org.thylex.eveme2.app;
 
+import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.thylex.eveme2.db.Db;
 import org.thylex.eveme2.db.dynWorker;
+import org.thylex.eveme2.db.sde.IndActivityTypes;
+import org.thylex.eveme2.db.sde.IndustryActivity;
+import org.thylex.eveme2.db.sde.IndustryActivityMaterials;
 import org.thylex.eveme2.db.sde.InvCategories;
 import org.thylex.eveme2.db.sde.InvGroups;
+import org.thylex.eveme2.db.sde.InvItems;
+import org.thylex.eveme2.db.sde.InvTypes;
 import org.thylex.eveme2.db.sdeWorker;
 import org.thylex.eveme2.gui.EvemeFrame;
 
@@ -60,11 +67,24 @@ public class App {
     }
     
     public void testingShit() {
-        InvCategories BPCat = SDE.findCategoriesByName("Blueprint");
-        System.out.println(BPCat.getInvGroups().size());
-        for (InvGroups group : BPCat.getInvGroups()) {
-            System.out.println(group.getGroupName() + ": " + group.getInvTypes().size());
-        }
+//        InvCategories BPCat = SDE.findCategoriesByName("Blueprint");
+//        System.out.println(BPCat.getInvGroups().size());
+//        for (InvGroups group : BPCat.getInvGroups()) {
+//            System.out.println(group.getGroupName() + ": " + group.getInvTypes().size());
+//        }
+//        InvGroups group = SDE.findGroupByName("Cruiser Blueprint");
+//        for (InvTypes type : group.getInvTypes()) {
+//            System.out.println(type.getTypeName());
+//        }
+//        System.out.println(SDE.findRaceByName("Caldari").getShortDescription());
+        // TypeID 968 is Moa Blueprint
+        // TypeID 33519 is MTU BP
+//        InvTypes moaBP = SDE.findTypeByID(33519);
+//        List<IndustryActivityMaterials> moaBPMats = SDE.findIndyMaterials(moaBP.getTypeID(), IndActivityTypes.Manufacturing);
+//        for (IndustryActivityMaterials mat : moaBPMats) {
+//            System.out.println("MTU mats: " + mat.getMaterial().getTypeName() + " x " + mat.getQuantity());
+//            System.out.println("Mat type: " + mat.getMaterial().getInvGroup().getInvCategory().getCategoryName());
+//        }
     }
     
     public EvemeSettings getSettings() {
@@ -83,6 +103,12 @@ public class App {
         SDE.Close();
         DYN.Close();
         DB.CloseAndExit();
+        
+        // Save size and position
+        String position = String.format( "%d,%d,%d,%d", gui.getX(), gui.getY(), gui.getWidth(), gui.getHeight());
+        System.out.println("GUI position: " + position);
+        Settings.setProp("AppPos", position);
+        
         gui.dispose();
     }
 }

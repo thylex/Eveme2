@@ -6,6 +6,7 @@
 package org.thylex.eveme2.db.dyn;
 
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,22 +28,31 @@ public class ItemPrice implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ItemID")
     private Long itemID;
-    private Double price;
-    private Date checkedAt;
+    private Double buyPrice;
+    private Double sellPrice;
+    private DateFormat checkedAt;
 
-    public Double getPrice() {
-        return price;
+    public Double getBuyPrice() {
+        return buyPrice;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public void setBuyPrice(Double buyPrice) {
+        this.buyPrice = buyPrice;
     }
 
-    public Date getCheckedAt() {
+    public Double getSellPrice() {
+        return sellPrice;
+    }
+
+    public void setSellPrice(Double sellPrice) {
+        this.sellPrice = sellPrice;
+    }
+
+    public DateFormat getCheckedAt() {
         return checkedAt;
     }
 
-    public void setCheckedAt(Date checkedAt) {
+    public void setCheckedAt(DateFormat checkedAt) {
         this.checkedAt = checkedAt;
     }
 
