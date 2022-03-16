@@ -12,9 +12,9 @@ import java.util.Vector;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import org.thylex.eveme2.app.App;
-import org.thylex.eveme2.db.sde.InvCategories;
-import org.thylex.eveme2.db.sde.InvGroups;
-import org.thylex.eveme2.db.sde.InvTypes;
+import org.thylex.eveme2.io.local.sde.InvCategories;
+import org.thylex.eveme2.io.local.sde.InvGroups;
+import org.thylex.eveme2.io.local.sde.InvTypes;
 
 /**
  *
@@ -32,14 +32,11 @@ public class BlueprintValuePanel extends javax.swing.JPanel {
     private static String[] MEvalues = {"20", "18", "16", "14", "12", "10", "8", "6", "4", "2", "0"};
     private static String[] TEvalues = {"10", "9", "8", "7", "6", "5", "4", "3", "2", "1", "0"};
     private bpValSplit parent = null;
+    private InvTypes selectedItem = null;
     
     /**
      * Creates new form BlueprintValuePanel
      */
-    public BlueprintValuePanel() {
-        initComponents();
-    }
-
     public BlueprintValuePanel(App appl, bpValSplit parentPanel) {
         this.app = appl;
         this.parent = parentPanel;
@@ -90,6 +87,7 @@ public class BlueprintValuePanel extends javax.swing.JPanel {
         String selectedBP = app.getSettings().getProp("bpValueSelectedBP");
         if (selectedBP != null) {
             cmbBlueprint.setSelectedItem(selectedBP);
+            selectedItem = app.getSdeWorker().findTypeByName(selectedBP);
         }
         cmbBlueprint.addActionListener((e) -> {
             cmbBlueprintActionPerformed(e);
@@ -131,6 +129,14 @@ public class BlueprintValuePanel extends javax.swing.JPanel {
         this.validate();
         this.setVisible(true);
     }
+
+    public InvTypes getSelectedItem() {
+        if (selectedItem != null) {
+            return selectedItem;
+        } else {
+            return null;
+        }
+    }
     
     private void cmbGroupsActionPerformed(ActionEvent e) {
         JComboBox box = (JComboBox) e.getSource();
@@ -150,8 +156,8 @@ public class BlueprintValuePanel extends javax.swing.JPanel {
     
     private void cmbBlueprintActionPerformed(ActionEvent e) {
         app.getSettings().setProp("bpValueSelectedBP", cmbBlueprint.getSelectedItem().toString());
-        InvTypes currentItem = app.getSdeWorker().findTypeByName(cmbBlueprint.getSelectedItem().toString());
-        parent.calcBPValue(currentItem);
+        selectedItem = app.getSdeWorker().findTypeByName(cmbBlueprint.getSelectedItem().toString());
+        parent.calcBPValue(selectedItem);
     }
     
     private void cmdMeTeActionPerformed(ActionEvent e) {

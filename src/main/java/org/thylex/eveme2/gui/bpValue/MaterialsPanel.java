@@ -6,10 +6,12 @@
 package org.thylex.eveme2.gui.bpValue;
 
 import java.awt.GridLayout;
+import java.util.Map;
 import java.util.Set;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
-import org.thylex.eveme2.db.sde.IndustryActivityMaterials;
+import org.thylex.eveme2.io.local.dyn.ItemPrice;
+import org.thylex.eveme2.io.local.sde.IndustryActivityMaterials;
 
 /**
  *
@@ -25,11 +27,11 @@ public class MaterialsPanel extends javax.swing.JPanel {
         initComponents();
     }
 
-    public MaterialsPanel(String title, Set<IndustryActivityMaterials> materials) {
+    public MaterialsPanel(String title, Set<IndustryActivityMaterials> materials, Map<Integer, ItemPrice> prices) {
         mats = materials;
 
         initComponents();
-        // Name, Quantity, Price, Provded
+        // Name, Quantity, Price, Provided
         this.setLayout(new GridLayout((1 + mats.size()), 3));
         this.setBorder(javax.swing.BorderFactory.createTitledBorder(title));
         
@@ -39,14 +41,14 @@ public class MaterialsPanel extends javax.swing.JPanel {
         add(new JLabel("Provided"));
         
         for (IndustryActivityMaterials mat : mats) {
-            this.add(new JLabel(mat.getMaterial().getTypeName()));
+            this.add(new JLabel(mat.getMaterial().getTypeName() + " "));
             this.add(new JLabel(mat.getQuantity().toString()));
-            if (mat.getMaterial().getBasePrice() == null) {
-                this.add(new JLabel("0"));
+            if (prices.get(mat.getMaterial().getTypeID()) == null) {
+                this.add(new JLabel("N/A"));
             } else {
-                this.add(new JLabel(mat.getMaterial().getBasePrice().toString()));
+                this.add(new JLabel(prices.get(mat.getMaterial().getTypeID()).getLowSellPrice().toString()));
             }
-            this.add(new JCheckBox("Provided", true));
+            this.add(new JCheckBox("", true));
         }
     }
 

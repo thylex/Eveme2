@@ -5,24 +5,15 @@
  */
 package org.thylex.eveme2.app;
 
-import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.thylex.eveme2.db.Db;
-import org.thylex.eveme2.db.dynWorker;
-import org.thylex.eveme2.db.sde.IndActivityTypes;
-import org.thylex.eveme2.db.sde.IndustryActivity;
-import org.thylex.eveme2.db.sde.IndustryActivityMaterials;
-import org.thylex.eveme2.db.sde.InvCategories;
-import org.thylex.eveme2.db.sde.InvGroups;
-import org.thylex.eveme2.db.sde.InvItems;
-import org.thylex.eveme2.db.sde.InvTypes;
-import org.thylex.eveme2.db.sdeWorker;
+import org.thylex.eveme2.io.local.Db;
+import org.thylex.eveme2.io.local.dynWorker;
+import org.thylex.eveme2.io.local.sdeWorker;
 import org.thylex.eveme2.gui.EvemeFrame;
 
 /**

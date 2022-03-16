@@ -9,15 +9,22 @@ import org.thylex.eveme2.gui.bpValue.BlueprintValuePanel;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.LayoutManager;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import org.thylex.eveme2.app.App;
-import org.thylex.eveme2.db.sde.IndActivityTypes;
-import org.thylex.eveme2.db.sde.IndustryActivityMaterials;
-import org.thylex.eveme2.db.sde.InvTypes;
+import org.thylex.eveme2.io.local.dyn.ItemPrice;
+import org.thylex.eveme2.io.local.sde.IndActivityTypes;
+import org.thylex.eveme2.io.local.sde.IndustryActivityMaterials;
+import org.thylex.eveme2.io.local.sde.InvItems;
+import org.thylex.eveme2.io.local.sde.InvTypes;
 
 /**
  *
@@ -26,7 +33,7 @@ import org.thylex.eveme2.db.sde.InvTypes;
 public class bpValSplit extends javax.swing.JPanel {
 
     private App app = null;
-    private JPanel left = null;
+    private BlueprintValuePanel left = null;
     private JPanel right = null;
     private JSplitPane split = null;
     /**
@@ -38,13 +45,14 @@ public class bpValSplit extends javax.swing.JPanel {
         
         left = new BlueprintValuePanel(app, this);
         left.setMinimumSize(new Dimension(200,100));
-        right = new JPanel(); 
+        right = new JPanel();
+        right.setLayout(new GridBagLayout());
         right.setMinimumSize(new Dimension(200,100));
         
         split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left, right);
         split.setContinuousLayout(false);
         split.setOneTouchExpandable(false);
-        //split.setResizeWeight(0.3);
+        split.setResizeWeight(0.5);
         
         this.setLayout(new BorderLayout());
         this.setMinimumSize(new Dimension(400, 200));
@@ -53,28 +61,49 @@ public class bpValSplit extends javax.swing.JPanel {
         this.doLayout();
         this.validate();
         
+        if (left.getSelectedItem() != null) {
+            calcBPValue(left.getSelectedItem());
+        }
+        
         this.setVisible(true);
     }
     
     public void calcBPValue(InvTypes item) {
         HashMap<String, Set<IndustryActivityMaterials>> sorted = sortItems(item);
-        //System.out.println("Sorted size: " + sorted.size());
+        HashSet<Integer> itemIDs = new HashSet();
+        HashMap<Integer, ItemPrice> prices;
         
+        // Clean any old subcomponents
         for (Component c : right.getComponents()) {
             right.remove(c);
         }
+        
+        System.out.println("Calculating for: " + item.getTypeName());
+        // Build list of item IDs and get prices for them
+        for (IndustryActivityMaterials mat : app.getSdeWorker().findIndyMaterials(item.getTypeID(), IndActivityTypes.Manufacturing)) {
+            itemIDs.add(mat.getMaterial().getTypeID());
+        }
+
+        System.out.println("Checking prices for items: " + itemIDs.size());
+        prices = (HashMap<Integer, ItemPrice>) app.getDynWorker().getPrices(itemIDs, Boolean.TRUE);
+        
+        // Create new subcompoents
+        int row = 0;
         for (String key : sorted.keySet()) {
-            //System.out.println(key + ": " + sorted.get(key).size());
-            right.add(new MaterialsPanel(key, sorted.get(key)));
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.gridx = 0;
+            gbc.gridy = row++;
+            gbc.anchor = GridBagConstraints.NORTH;
+            right.add(new MaterialsPanel(key, sorted.get(key), prices), gbc);
         }
         this.validate();
     }
     
     private HashMap<String, Set<IndustryActivityMaterials>> sortItems(InvTypes items) {
-        HashMap<String, Set<IndustryActivityMaterials>> result = new HashMap<String, Set<IndustryActivityMaterials>>();
+        HashMap<String, Set<IndustryActivityMaterials>> result = new HashMap<>();
         for (IndustryActivityMaterials mat : app.getSdeWorker().findIndyMaterials(items.getTypeID(), IndActivityTypes.Manufacturing)) {
             String key = mat.getMaterial().getInvGroup().getInvCategory().getCategoryName();
-            if (result.containsKey(mat.getMaterial().getInvGroup().getInvCategory().getCategoryName())) {
+            if (result.containsKey(key)) {
                 Set<IndustryActivityMaterials> temp = result.get(key);
                 temp.add(mat);
                 result.put(key, temp);
