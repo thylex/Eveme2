@@ -10,8 +10,8 @@ import java.util.Map;
 import java.util.Set;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
-import org.thylex.eveme2.io.local.dyn.ItemPrice;
-import org.thylex.eveme2.io.local.sde.IndustryActivityMaterials;
+import org.thylex.eveme2.io.entities.dyn.ItemPrice;
+import org.thylex.eveme2.io.entities.sde.IndustryActivityMaterials;
 
 /**
  *

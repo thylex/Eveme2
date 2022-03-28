@@ -57,6 +57,13 @@ public class App {
         
     }
     
+    public void getNewSDE() {
+        SDE.Close();
+        DB.refreshSDE();
+        SDE = new sdeWorker(DB.getSdeEntityManager());
+        
+    }
+    
     public void testingShit() {
 //        InvCategories BPCat = SDE.findCategoriesByName("Blueprint");
 //        System.out.println(BPCat.getInvGroups().size());

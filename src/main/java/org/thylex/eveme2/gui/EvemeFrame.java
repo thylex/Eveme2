@@ -74,7 +74,8 @@ public class EvemeFrame extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuFileNewSDE = new javax.swing.JMenuItem();
+        jMenuFileExit = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         jMenu3.setText("jMenu3");
@@ -84,13 +85,21 @@ public class EvemeFrame extends javax.swing.JFrame {
 
         jMenu1.setText("File");
 
-        jMenuItem1.setText("Exit");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        jMenuFileNewSDE.setText("Get new SDE");
+        jMenuFileNewSDE.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                jMenuFileNewSDEActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jMenu1.add(jMenuFileNewSDE);
+
+        jMenuFileExit.setText("Exit");
+        jMenuFileExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuFileExitActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuFileExit);
 
         jMenuBar1.add(jMenu1);
 
@@ -113,9 +122,13 @@ public class EvemeFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void jMenuFileExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuFileExitActionPerformed
         app.CloseAndExit();
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_jMenuFileExitActionPerformed
+
+    private void jMenuFileNewSDEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuFileNewSDEActionPerformed
+        app.getNewSDE();
+    }//GEN-LAST:event_jMenuFileNewSDEActionPerformed
 
     /**
      * @param args the command line arguments
@@ -158,7 +171,8 @@ public class EvemeFrame extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuFileExit;
+    private javax.swing.JMenuItem jMenuFileNewSDE;
     // End of variables declaration//GEN-END:variables
 }
 
@@ -172,13 +186,14 @@ class EvemeFrameListener implements WindowListener {
     @Override
     public void windowClosing(WindowEvent e) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        EvemeFrame ef = (EvemeFrame) e.getSource();
+        ef.CloseAndExit();
+        
     }
 
     @Override
     public void windowClosed(WindowEvent e) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        EvemeFrame ef = (EvemeFrame) e.getSource();
-        ef.CloseAndExit();
     }
 
     @Override

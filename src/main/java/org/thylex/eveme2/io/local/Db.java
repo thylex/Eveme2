@@ -57,20 +57,28 @@ public class Db {
             System.exit(1);
         }
         
+        sdeFactory = this.openSDEFactory();
+        
+        dynFactory = this.openDynFactory();
+    }
+    
+    private EntityManagerFactory openSDEFactory() {
         Map sdeProps = new HashMap();
         sdeProps.put("javax.persistence.jdbc.url", "jdbc:sqlite:".concat(staticDbFile.getAbsolutePath()));
         sdeProps.put("javax.persistence.jdbc.user", "");
         sdeProps.put("javax.persistence.jdbc.driver", "org.sqlite.JDBC");
         sdeProps.put("javax.persistence.jdbc.password", "");
-        sdeFactory = Persistence.createEntityManagerFactory("EVE-SDE", sdeProps);
-        
+        return Persistence.createEntityManagerFactory("EVE-SDE", sdeProps);
+    }
+    
+    private EntityManagerFactory openDynFactory() {
         Map dynProps = new HashMap();
         dynProps.put("javax.persistence.jdbc.url", "jdbc:sqlite:".concat(dynDbFile.getAbsolutePath()));
         dynProps.put("javax.persistence.jdbc.user", "");
         dynProps.put("javax.persistence.jdbc.driver", "org.sqlite.JDBC");
         dynProps.put("javax.persistence.jdbc.password", "");
         dynProps.put("javax.persistence.schema-generation.database.action", "create");
-        dynFactory = Persistence.createEntityManagerFactory("EVE-DYN", dynProps);
+        return Persistence.createEntityManagerFactory("EVE-DYN", dynProps);
 
     }
     
@@ -80,6 +88,12 @@ public class Db {
     
     public EntityManager getDynEntityManager() {
         return dynFactory.createEntityManager();
+    }
+    
+    public void refreshSDE() {
+        sdeFactory.close();
+        DownloadNewStaticDump(app.getSettings().getProp("AppDir"));
+        sdeFactory = this.openSDEFactory();
     }
     
     public void CloseAndExit() {

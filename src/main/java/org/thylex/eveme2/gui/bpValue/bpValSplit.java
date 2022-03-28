@@ -20,11 +20,11 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import org.thylex.eveme2.app.App;
-import org.thylex.eveme2.io.local.dyn.ItemPrice;
-import org.thylex.eveme2.io.local.sde.IndActivityTypes;
-import org.thylex.eveme2.io.local.sde.IndustryActivityMaterials;
-import org.thylex.eveme2.io.local.sde.InvItems;
-import org.thylex.eveme2.io.local.sde.InvTypes;
+import org.thylex.eveme2.io.entities.dyn.ItemPrice;
+import org.thylex.eveme2.io.entities.sde.IndActivityTypes;
+import org.thylex.eveme2.io.entities.sde.IndustryActivityMaterials;
+import org.thylex.eveme2.io.entities.sde.InvItems;
+import org.thylex.eveme2.io.entities.sde.InvTypes;
 
 /**
  *

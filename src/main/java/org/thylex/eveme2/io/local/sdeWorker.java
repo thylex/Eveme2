@@ -8,12 +8,12 @@ package org.thylex.eveme2.io.local;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import org.thylex.eveme2.io.local.sde.ChrRaces;
-import org.thylex.eveme2.io.local.sde.IndustryActivityMaterials;
-import org.thylex.eveme2.io.local.sde.InvCategories;
-import org.thylex.eveme2.io.local.sde.InvGroups;
-import org.thylex.eveme2.io.local.sde.InvItems;
-import org.thylex.eveme2.io.local.sde.InvTypes;
+import org.thylex.eveme2.io.entities.sde.ChrRaces;
+import org.thylex.eveme2.io.entities.sde.IndustryActivityMaterials;
+import org.thylex.eveme2.io.entities.sde.InvCategories;
+import org.thylex.eveme2.io.entities.sde.InvGroups;
+import org.thylex.eveme2.io.entities.sde.InvItems;
+import org.thylex.eveme2.io.entities.sde.InvTypes;
 
 /**
  *

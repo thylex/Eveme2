@@ -12,9 +12,9 @@ import java.util.Vector;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import org.thylex.eveme2.app.App;
-import org.thylex.eveme2.io.local.sde.InvCategories;
-import org.thylex.eveme2.io.local.sde.InvGroups;
-import org.thylex.eveme2.io.local.sde.InvTypes;
+import org.thylex.eveme2.io.entities.sde.InvCategories;
+import org.thylex.eveme2.io.entities.sde.InvGroups;
+import org.thylex.eveme2.io.entities.sde.InvTypes;
 
 /**
  *

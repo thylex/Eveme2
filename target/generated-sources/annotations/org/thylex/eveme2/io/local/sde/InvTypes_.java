@@ -1,13 +1,14 @@
 package org.thylex.eveme2.io.local.sde;
 
+import org.thylex.eveme2.io.entities.sde.InvTypes;
 import javax.annotation.processing.Generated;
 import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
-import org.thylex.eveme2.io.local.sde.InvGroups;
-import org.thylex.eveme2.io.local.sde.InvItems;
+import org.thylex.eveme2.io.entities.sde.InvGroups;
+import org.thylex.eveme2.io.entities.sde.InvItems;
 
-@Generated(value="org.eclipse.persistence.internal.jpa.modelgen.CanonicalModelProcessor", date="2021-09-21T14:13:37", comments="EclipseLink-2.7.8.v20201217-rNA")
+@Generated(value="org.eclipse.persistence.internal.jpa.modelgen.CanonicalModelProcessor", date="2022-03-28T14:39:55", comments="EclipseLink-2.7.8.v20201217-rNA")
 @StaticMetamodel(InvTypes.class)
 public class InvTypes_ { 
 

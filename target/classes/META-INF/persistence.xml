@@ -2,18 +2,18 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="EVE-SDE" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>org.thylex.eveme2.io.local.sde.InvCategories</class>
-    <class>org.thylex.eveme2.io.local.sde.IndustryActivityMaterials</class>
-    <class>org.thylex.eveme2.io.local.sde.IndustryActivity</class>
-    <class>org.thylex.eveme2.io.local.sde.InvGroups</class>
-    <class>org.thylex.eveme2.io.local.sde.IndustryActivityProbabilities</class>
-    <class>org.thylex.eveme2.io.local.sde.IndustryActivityProducts</class>
-    <class>org.thylex.eveme2.io.local.sde.IndustryActivityRaces</class>
-    <class>org.thylex.eveme2.io.local.sde.ChrRaces</class>
-    <class>org.thylex.eveme2.io.local.sde.IndustryActivitySkills</class>
-    <class>org.thylex.eveme2.io.local.sde.InvItems</class>
-    <class>org.thylex.eveme2.io.local.sde.InvTypes</class>
-    <class>org.thylex.eveme2.io.local.sde.IndustryBlueprints</class>
+    <class>org.thylex.eveme2.io.entities.sde.InvTypes</class>
+    <class>org.thylex.eveme2.io.entities.sde.InvCategories</class>
+    <class>org.thylex.eveme2.io.entities.sde.IndustryActivityMaterials</class>
+    <class>org.thylex.eveme2.io.entities.sde.ChrRaces</class>
+    <class>org.thylex.eveme2.io.entities.sde.InvGroups</class>
+    <class>org.thylex.eveme2.io.entities.sde.IndustryActivityProducts</class>
+    <class>org.thylex.eveme2.io.entities.sde.InvItems</class>
+    <class>org.thylex.eveme2.io.entities.sde.IndustryActivityRaces</class>
+    <class>org.thylex.eveme2.io.entities.sde.IndustryActivity</class>
+    <class>org.thylex.eveme2.io.entities.sde.IndustryActivityProbabilities</class>
+    <class>org.thylex.eveme2.io.entities.sde.IndustryActivitySkills</class>
+    <class>org.thylex.eveme2.io.entities.sde.IndustryBlueprints</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlite:C:\Users\thyle\Documents\EveMe2\eve-sde-20210127.dummy.db"/>
@@ -24,7 +24,7 @@
   </persistence-unit>
   <persistence-unit name="EVE-DYN" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>org.thylex.eveme2.io.local.dyn.ItemPrice</class>
+    <class>org.thylex.eveme2.io.entities.dyn.ItemPrice</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlite:C:\Users\thyle\Documents\EveMe2\eve-dyn.dummy.db"/>
