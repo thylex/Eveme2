@@ -13,6 +13,7 @@ import org.thylex.eveme2.io.entities.sde.IndustryActivityMaterials;
 import org.thylex.eveme2.io.entities.sde.InvCategories;
 import org.thylex.eveme2.io.entities.sde.InvGroups;
 import org.thylex.eveme2.io.entities.sde.InvItems;
+import org.thylex.eveme2.io.entities.sde.InvMarketGroups;
 import org.thylex.eveme2.io.entities.sde.InvTypes;
 
 /**
@@ -38,6 +39,12 @@ public class sdeWorker {
         return (InvTypes) q.getSingleResult();
     }
     
+    public List<InvTypes> findTypeByMarketGroupID(Integer marketGroupID) {
+        Query q = em.createQuery("SELECT i FROM InvTypes i WHERE i.marketGroupID = :id");
+        q.setParameter("id", marketGroupID);
+        return q.getResultList();
+    }
+    
     public InvTypes findTypeByName(String name) {
         Query q = em.createQuery("SELECT i FROM InvTypes i WHERE i.typeName = :id");
         q.setParameter("id", name);
@@ -54,6 +61,18 @@ public class sdeWorker {
         Query q = em.createQuery("SELECT i FROM InvGroups i WHERE i.groupName = :name AND i.published = 1");
         q.setParameter("name", name);
         return (InvGroups) q.getSingleResult();
+    }
+    
+    public InvMarketGroups findMarketGroupsByName(String name) {
+        Query q = em.createQuery("SELECT g FROM InvMarketGroups g WHERE g.marketGroupName = :groupName");
+        q.setParameter("groupName", name);
+        return (InvMarketGroups) q.getSingleResult();
+    }
+    
+    public List<InvMarketGroups> findMarketGroupsByParentID(Integer parentID) {
+        Query q = em.createQuery("SELECT g FROM InvMarketGroups g WHERE g.parentGroupID = :id");
+        q.setParameter("id", parentID);
+        return q.getResultList();
     }
     
     public ChrRaces findRaceByName(String name) {

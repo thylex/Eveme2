@@ -9,21 +9,17 @@ import org.thylex.eveme2.gui.bpValue.BlueprintValuePanel;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.LayoutManager;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import org.thylex.eveme2.app.App;
 import org.thylex.eveme2.io.entities.dyn.ItemPrice;
 import org.thylex.eveme2.io.entities.sde.IndActivityTypes;
 import org.thylex.eveme2.io.entities.sde.IndustryActivityMaterials;
-import org.thylex.eveme2.io.entities.sde.InvItems;
 import org.thylex.eveme2.io.entities.sde.InvTypes;
 
 /**
@@ -33,7 +29,7 @@ import org.thylex.eveme2.io.entities.sde.InvTypes;
 public class bpValSplit extends javax.swing.JPanel {
 
     private App app = null;
-    private BlueprintValuePanel left = null;
+    private BlueprintValuePanel2 left = null;
     private JPanel right = null;
     private JSplitPane split = null;
     /**
@@ -43,7 +39,7 @@ public class bpValSplit extends javax.swing.JPanel {
         app = appl;
         initComponents();
         
-        left = new BlueprintValuePanel(app, this);
+        left = new BlueprintValuePanel2(app, this);
         left.setMinimumSize(new Dimension(200,100));
         right = new JPanel();
         right.setLayout(new GridBagLayout());
@@ -61,9 +57,9 @@ public class bpValSplit extends javax.swing.JPanel {
         this.doLayout();
         this.validate();
         
-        if (left.getSelectedItem() != null) {
-            calcBPValue(left.getSelectedItem());
-        }
+//        if (left.getSelectedItem() != null) {
+//            calcBPValue(left.getSelectedItem());
+//        }
         
         this.setVisible(true);
     }
@@ -78,13 +74,13 @@ public class bpValSplit extends javax.swing.JPanel {
             right.remove(c);
         }
         
-        System.out.println("Calculating for: " + item.getTypeName());
+        //System.out.println("Calculating for: " + item.getTypeName());
         // Build list of item IDs and get prices for them
         for (IndustryActivityMaterials mat : app.getSdeWorker().findIndyMaterials(item.getTypeID(), IndActivityTypes.Manufacturing)) {
             itemIDs.add(mat.getMaterial().getTypeID());
         }
 
-        System.out.println("Checking prices for items: " + itemIDs.size());
+        //System.out.println("Checking prices for items: " + itemIDs.size());
         prices = (HashMap<Integer, ItemPrice>) app.getDynWorker().getPrices(itemIDs, Boolean.TRUE);
         
         // Create new subcompoents

@@ -29,8 +29,8 @@ public class BlueprintValuePanel extends javax.swing.JPanel {
     private JComboBox cmbBlueprint = null;
     private JComboBox cmbME = null;
     private JComboBox cmbTE = null;
-    private static String[] MEvalues = {"20", "18", "16", "14", "12", "10", "8", "6", "4", "2", "0"};
-    private static String[] TEvalues = {"10", "9", "8", "7", "6", "5", "4", "3", "2", "1", "0"};
+    private static final String[] MEvalues = {"20", "18", "16", "14", "12", "10", "8", "6", "4", "2", "0"};
+    private static final String[] TEvalues = {"10", "9", "8", "7", "6", "5", "4", "3", "2", "1", "0"};
     private bpValSplit parent = null;
     private InvTypes selectedItem = null;
     

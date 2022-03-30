@@ -53,7 +53,7 @@ public class dynWorker {
         for(Integer id : itemIDs) {
             ItemPrice temp = findItemPriceByID(id);
             if (temp == null) {
-                System.out.println("No cached price found for ID: " + id.toString());
+                //System.out.println("No cached price found for ID: " + id.toString());
                 // Add ID to check with EVEMarketer later
                 notFound.add(id);
             } else {
@@ -62,7 +62,7 @@ public class dynWorker {
         }
         
         if (refreshOldAndNotFound && (! notFound.isEmpty())) {
-            System.out.println("Have items to check with EVEMarketer: " + notFound.size());
+            //System.out.println("Have items to check with EVEMarketer: " + notFound.size());
             result.putAll(checkEVEMarketer(notFound));
         }
         
@@ -84,7 +84,7 @@ public class dynWorker {
         webURL = webURL.substring(0, (webURL.length() -1));
         // Limit to The Forge region for now
         webURL = webURL + "&regionlimit=10000002";
-        System.out.println(webURL);
+        //System.out.println(webURL);
         
         try {
             URL url = new URL(webURL);
@@ -106,9 +106,9 @@ public class dynWorker {
             // PArse the reply
             ObjectMapper jackson = new ObjectMapper();
             //JsonNode fullReply = jackson.readTree(bIn);
-            System.out.println(response.toString());
+            //System.out.println(response.toString());
             JsonReply[] jsonReplies = jackson.readValue(response.toString(), JsonReply[].class);
-            System.out.println("Json reply size: " + jsonReplies.length);
+            //System.out.println("Json reply size: " + jsonReplies.length);
             
             for (JsonReply reply : jsonReplies) {
                 ItemPrice newPrice = new ItemPrice();

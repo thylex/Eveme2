@@ -40,7 +40,7 @@ public class EvemeSettings {
     public void save() {
         try {
             OutputStream outstream = new FileOutputStream(new File(props.getProperty("SettingsFile")));
-            System.out.println(props.toString());
+            //System.out.println(props.toString());
             props.storeToXML(outstream, "Eveme2 Properties");
             outstream.close();
         } catch (FileNotFoundException ex) {
@@ -53,7 +53,7 @@ public class EvemeSettings {
     public void load() {
         try {
             InputStream instream = new FileInputStream(new File(props.getProperty("SettingsFile")));
-            System.out.println(props.toString());
+            //System.out.println(props.toString());
             props.loadFromXML(instream);
             instream.close();
         } catch (FileNotFoundException ex) {

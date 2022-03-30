@@ -14,6 +14,7 @@
     <class>org.thylex.eveme2.io.entities.sde.IndustryActivityProbabilities</class>
     <class>org.thylex.eveme2.io.entities.sde.IndustryActivitySkills</class>
     <class>org.thylex.eveme2.io.entities.sde.IndustryBlueprints</class>
+    <class>org.thylex.eveme2.io.entities.sde.InvMarketGroups</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlite:C:\Users\thyle\Documents\EveMe2\eve-sde-20210127.dummy.db"/>

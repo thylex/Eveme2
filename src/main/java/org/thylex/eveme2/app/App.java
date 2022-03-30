@@ -104,7 +104,7 @@ public class App {
         
         // Save size and position
         String position = String.format( "%d,%d,%d,%d", gui.getX(), gui.getY(), gui.getWidth(), gui.getHeight());
-        System.out.println("GUI position: " + position);
+        //System.out.println("GUI position: " + position);
         Settings.setProp("AppPos", position);
         
         gui.dispose();
