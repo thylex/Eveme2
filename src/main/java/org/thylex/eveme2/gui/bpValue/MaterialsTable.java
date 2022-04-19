@@ -5,19 +5,15 @@
  */
 package org.thylex.eveme2.gui.bpValue;
 
-import org.thylex.eveme2.gui.bpValue.BlueprintValuePanel;
 import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JPanel;
-import javax.swing.JSplitPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import org.thylex.eveme2.app.App;
 import org.thylex.eveme2.io.entities.dyn.ItemPrice;
 import org.thylex.eveme2.io.entities.sde.IndActivityTypes;
@@ -28,60 +24,36 @@ import org.thylex.eveme2.io.entities.sde.InvTypes;
  *
  * @author thyle
  */
-public class bpValSplit extends javax.swing.JPanel {
+public class MaterialsTable extends javax.swing.JPanel {
 
+    private InvTypes bp = null;
     private App app = null;
-    private BlueprintValuePanel2 left = null;
-    private JPanel right = null;
-    private JSplitPane split = null;
-    private Logger logger = Logger.getLogger(bpValSplit.class.toString());
+    private static final Logger logger = Logger.getLogger(MaterialsTable.class.toString());
+    private JTable materialTable = null;
     /**
-     * Creates new form bpValSplit
+     * Creates new form MaterialsTable
      */
-    public bpValSplit(App appl) {
+    public MaterialsTable(InvTypes blueprint, App appl) {
+        bp = blueprint;
         app = appl;
-        logger.log(Level.INFO, "Initializing BP Value Splitpane");
         
         initComponents();
         
-        left = new BlueprintValuePanel2(app, this);
-        left.setMinimumSize(new Dimension(200,100));
-        right = new JPanel();
-        right.setLayout(new GridBagLayout());
-        right.setMinimumSize(new Dimension(200,100));
-        
-        split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left, right);
-        split.setContinuousLayout(false);
-        split.setOneTouchExpandable(false);
-        split.setResizeWeight(0.5);
-        
         this.setLayout(new BorderLayout());
-        this.setMinimumSize(new Dimension(400, 200));
-        this.add(split);
         
-        this.doLayout();
-        this.validate();
+        materialTable = new JTable(calcBPValue(blueprint));
+        materialTable.setFillsViewportHeight(true);
+        this.add(new JScrollPane(materialTable), BorderLayout.CENTER);
         
         this.setVisible(true);
     }
-    
-    public void calcBPTable(InvTypes item) {
-        right = new MaterialsTable(item, app);
-        split.setRightComponent(right);
-        split.doLayout();
-    }
-    
-    public void calcBPValue(InvTypes item) {
+
+    private MaterialTableModel calcBPValue(InvTypes item) {
         logger.log(Level.INFO, "Calculating value of ".concat(item.getTypeName()));
         
         HashMap<String, Set<IndustryActivityMaterials>> sorted = sortItems(item);
         HashSet<Integer> itemIDs = new HashSet();
         HashMap<Integer, ItemPrice> prices;
-        
-        // Clean any old subcomponents
-        for (Component c : right.getComponents()) {
-            right.remove(c);
-        }
         
         logger.log(Level.INFO, "Finding materials for production");
         // Build list of item IDs and get prices for them
@@ -92,21 +64,15 @@ public class bpValSplit extends javax.swing.JPanel {
         logger.log(Level.INFO, "Checking prices for materials");
         prices = (HashMap<Integer, ItemPrice>) app.getDynWorker().getPrices(itemIDs, Boolean.TRUE);
         
-        // Create new subcompoents
-        int row = 0;
-        for (String key : sorted.keySet()) {
-            GridBagConstraints gbc = new GridBagConstraints();
-            gbc.gridx = 0;
-            gbc.gridy = row++;
-            gbc.anchor = GridBagConstraints.NORTHWEST;
-            right.add(new MaterialsPanel(key, sorted.get(key), prices), gbc);
-        }
-        this.validate();
+        logger.log(Level.INFO, "Making new TableModel");
+        // Create new tablemodel
+        MaterialTableModel model = new MaterialTableModel(sorted, prices);
+        return model;
     }
     
-    private HashMap<String, Set<IndustryActivityMaterials>> sortItems(InvTypes items) {
+    private HashMap<String, Set<IndustryActivityMaterials>> sortItems(InvTypes typeItem) {
         HashMap<String, Set<IndustryActivityMaterials>> result = new HashMap<>();
-        for (IndustryActivityMaterials mat : app.getSdeWorker().findIndyMaterials(items.getTypeID(), IndActivityTypes.Manufacturing)) {
+        for (IndustryActivityMaterials mat : app.getSdeWorker().findIndyMaterials(typeItem.getTypeID(), IndActivityTypes.Manufacturing)) {
             String key = mat.getMaterial().getInvGroup().getInvCategory().getCategoryName();
             if (result.containsKey(key)) {
                 Set<IndustryActivityMaterials> temp = result.get(key);

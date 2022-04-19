@@ -11,8 +11,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeSelectionModel;
 import org.thylex.eveme2.app.App;
+import org.thylex.eveme2.io.entities.sde.InvCategories;
+import org.thylex.eveme2.io.entities.sde.InvGroups;
 import org.thylex.eveme2.io.entities.sde.InvMarketGroups;
 import org.thylex.eveme2.io.entities.sde.InvTypes;
 
@@ -20,12 +25,13 @@ import org.thylex.eveme2.io.entities.sde.InvTypes;
  *
  * @author thyle
  */
-public class BlueprintValuePanel2 extends javax.swing.JPanel {
+public class BlueprintValuePanel2 extends javax.swing.JPanel implements TreeSelectionListener {
 
     private App app;
     private bpValSplit parent;
     private DefaultMutableTreeNode top = null;
     private JScrollPane treeView = null;
+    private InvTypes selectedBP = null;
     private static final Logger log = Logger.getLogger(BlueprintValuePanel2.class.getName());
     /**
      * Creates new form BPValue2
@@ -42,15 +48,33 @@ public class BlueprintValuePanel2 extends javax.swing.JPanel {
         this.setLayout(new BorderLayout());
         
         JTree tree = new JTree(createBPTree());
+        tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        tree.addTreeSelectionListener(this);
         treeView = new JScrollPane(tree);
         this.add(treeView, BorderLayout.CENTER);
     }
+
+    @Override
+    public void valueChanged(TreeSelectionEvent e) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
+        
+        if (node == null) return;
+        
+        if (node.isLeaf()) {
+            bpLeaf leaf = (bpLeaf) node.getUserObject();
+            selectedBP = leaf.getInvTypes();
+            //parent.calcBPValue(selectedBP);
+            parent.calcBPTable(selectedBP);
+            this.validate();
+        }
+    }
     
-    private class TreeNode {
+    private class bpLeaf {
         private String nodeName = "";
         private InvTypes nodeType = null;
         
-        public TreeNode(InvTypes data) {
+        public bpLeaf(InvTypes data) {
             nodeName = data.getTypeName();
             nodeType = data;
         }
@@ -66,35 +90,26 @@ public class BlueprintValuePanel2 extends javax.swing.JPanel {
     }
 
     private DefaultMutableTreeNode createBPTree() {
-        InvMarketGroups topGroup = (InvMarketGroups) app.getSdeWorker().findMarketGroupsByName("Blueprints & Reactions");
-        DefaultMutableTreeNode topNode = addTreeBranch(topGroup);
-        return topNode;
-    }
-    
-    private DefaultMutableTreeNode addTreeBranch(InvMarketGroups marketGroup) {
-        DefaultMutableTreeNode tempNode = new DefaultMutableTreeNode(marketGroup.getMarketGroupName());
-        List<InvMarketGroups> temp = app.getSdeWorker().findMarketGroupsByParentID(marketGroup.getMarketGroupID());
-        log.log(Level.INFO, "Subitems found: ".concat(new Integer(temp.size()).toString()));
-        log.log(Level.INFO, "Market ID: ".concat(marketGroup.getMarketGroupID().toString()));
-        for(InvMarketGroups item : temp) {
-            if (item.getHasTypes() == 0) {
-                //tempNode = new DefaultMutableTreeNode(item.getMarketGroupName());
-                log.log(Level.INFO, item.getMarketGroupName().concat(" has no Types"));
-                log.log(Level.INFO, "Adding branch for: ".concat(item.getMarketGroupName()));
-                tempNode.add(addTreeBranch(item));
-            } else {
-                log.log(Level.INFO, item.getMarketGroupName().concat(" has Types"));
-                List<InvTypes> typesList = app.getSdeWorker().findTypeByMarketGroupID(item.getMarketGroupID());
-                DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(item.getMarketGroupName());
-                for (InvTypes typesItem : typesList) {
-                    log.log(Level.INFO, "Adding leaf for: ".concat(typesItem.getTypeName()));
-                    TreeNode leaf = new TreeNode(typesItem);
-                    subNode.add(new DefaultMutableTreeNode(leaf));
+        InvCategories bpCategory = app.getSdeWorker().findCategoriesByName("Blueprint");
+        DefaultMutableTreeNode topNode = new DefaultMutableTreeNode("Blueprints");
+        
+        for (InvGroups group : bpCategory.getInvGroups()) {
+            if (group.getPublished().equals(1)) {
+                DefaultMutableTreeNode groupNode = new DefaultMutableTreeNode(group.getGroupName());
+                int groupSize = 0;
+                for (InvTypes type : group.getInvTypes()) {
+                    if (type.getPublished() == true) {
+                        bpLeaf leaf = new bpLeaf(type);
+                        groupNode.add(new DefaultMutableTreeNode(leaf));
+                        groupSize++;
+                    }
                 }
-                tempNode.add(subNode);
+                if (groupSize > 0) {
+                    topNode.add(groupNode);
+                }
             }
         }
-        return tempNode;
+        return topNode;
     }
     
     /**
