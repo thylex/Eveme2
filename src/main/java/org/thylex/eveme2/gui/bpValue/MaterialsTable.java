@@ -13,9 +13,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 import org.thylex.eveme2.app.App;
-import org.thylex.eveme2.io.entities.dyn.ItemPrice;
+import org.thylex.eveme2.io.entities.dyn.TypePrice;
 import org.thylex.eveme2.io.entities.sde.IndActivityTypes;
 import org.thylex.eveme2.io.entities.sde.IndustryActivityMaterials;
 import org.thylex.eveme2.io.entities.sde.InvTypes;
@@ -52,17 +51,17 @@ public class MaterialsTable extends javax.swing.JPanel {
         logger.log(Level.INFO, "Calculating value of ".concat(item.getTypeName()));
         
         HashMap<String, Set<IndustryActivityMaterials>> sorted = sortItems(item);
-        HashSet<Integer> itemIDs = new HashSet();
-        HashMap<Integer, ItemPrice> prices;
+        HashSet<Integer> typeIDs = new HashSet();
+        HashMap<Integer, TypePrice> prices;
         
         logger.log(Level.INFO, "Finding materials for production");
         // Build list of item IDs and get prices for them
         for (IndustryActivityMaterials mat : app.getSdeWorker().findIndyMaterials(item.getTypeID(), IndActivityTypes.Manufacturing)) {
-            itemIDs.add(mat.getMaterial().getTypeID());
+            typeIDs.add(mat.getMaterial().getTypeID());
         }
 
         logger.log(Level.INFO, "Checking prices for materials");
-        prices = (HashMap<Integer, ItemPrice>) app.getDynWorker().getPrices(itemIDs, Boolean.TRUE);
+        prices = (HashMap<Integer, TypePrice>) app.getDynWorker().getPrices(typeIDs, Boolean.TRUE);
         
         logger.log(Level.INFO, "Making new TableModel");
         // Create new tablemodel

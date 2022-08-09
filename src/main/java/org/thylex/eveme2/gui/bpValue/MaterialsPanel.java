@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
-import org.thylex.eveme2.io.entities.dyn.ItemPrice;
+import org.thylex.eveme2.io.entities.dyn.TypePrice;
 import org.thylex.eveme2.io.entities.sde.IndustryActivityMaterials;
 
 /**
@@ -27,7 +27,7 @@ public class MaterialsPanel extends javax.swing.JPanel {
         initComponents();
     }
 
-    public MaterialsPanel(String title, Set<IndustryActivityMaterials> materials, Map<Integer, ItemPrice> prices) {
+    public MaterialsPanel(String title, Set<IndustryActivityMaterials> materials, Map<Integer, TypePrice> prices) {
         mats = materials;
 
         initComponents();

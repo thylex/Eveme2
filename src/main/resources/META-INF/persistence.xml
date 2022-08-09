@@ -25,7 +25,7 @@
   </persistence-unit>
   <persistence-unit name="EVE-DYN" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>org.thylex.eveme2.io.entities.dyn.ItemPrice</class>
+    <class>org.thylex.eveme2.io.entities.dyn.TypePrice</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlite:C:\Users\thyle\Documents\EveMe2\eve-dyn.dummy.db"/>

@@ -22,7 +22,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
-import org.thylex.eveme2.io.entities.dyn.ItemPrice;
+import org.thylex.eveme2.io.entities.dyn.TypePrice;
 import org.thylex.eveme2.io.online.evemarketer.JsonReply;
 
 /**
@@ -36,22 +36,32 @@ public class dynWorker {
         this.em = worker;
     }
     
-    public ItemPrice findItemPriceByID(Integer itemID) {
+//    public TypePrice findItemPriceByID(Integer itemID) {
+//        try {
+//            Query q = em.createQuery("SELECT p FROM ItemPrice p WHERE p.itemID = :id");
+//            q.setParameter("id", itemID);
+//            return (TypePrice) q.getSingleResult();
+//        } catch (NoResultException ex) {
+//            return null;
+//        }
+//    }
+    
+    public TypePrice findPriceByTypeID(Integer typeID) {
         try {
-            Query q = em.createQuery("SELECT p FROM ItemPrice p WHERE p.itemID = :id");
-            q.setParameter("id", itemID);
-            return (ItemPrice) q.getSingleResult();
+            Query q = em.createQuery("SELECT p FROM TypePrice p WHERE p.typeID = :id");
+            q.setParameter("id", typeID);
+            return (TypePrice) q.getSingleResult();
         } catch (NoResultException ex) {
             return null;
         }
     }
     
-    public Map<Integer, ItemPrice> getPrices(Set<Integer> itemIDs, Boolean refreshOldAndNotFound) {
-        HashMap<Integer, ItemPrice> result = new HashMap();
+    public Map<Integer, TypePrice> getPrices(Set<Integer> typeIDs, Boolean refreshOldAndNotFound) {
+        HashMap<Integer, TypePrice> result = new HashMap();
         HashSet<Integer> notFound = new HashSet();
         
-        for(Integer id : itemIDs) {
-            ItemPrice temp = findItemPriceByID(id);
+        for(Integer id : typeIDs) {
+            TypePrice temp = findPriceByTypeID(id);
             if (temp == null) {
                 //System.out.println("No cached price found for ID: " + id.toString());
                 // Add ID to check with EVEMarketer later
@@ -69,13 +79,19 @@ public class dynWorker {
         return result;
     }
     
-    private Map<Integer, ItemPrice> checkEVEMarketer(Set<Integer> itemIDs) {
-        HashMap<Integer, ItemPrice> result = new HashMap();
+    private Map<Integer, TypePrice> checkEVEPraisal(Set<Integer> typeIDs) {
+        HashMap<Integer, TypePrice> result = new HashMap();
+        
+        return result;
+    }
+    
+    private Map<Integer, TypePrice> checkEVEMarketer(Set<Integer> typeIDs) {
+        HashMap<Integer, TypePrice> result = new HashMap();
         String baseURL = "https://api.evemarketer.com/ec/marketstat/json";
         
         // Build URL suffix
         StringBuilder itemString = new StringBuilder("?typeid=");
-        for (Integer id : itemIDs) {
+        for (Integer id : typeIDs) {
             itemString.append(id);
             itemString.append(",");
         }
@@ -111,29 +127,30 @@ public class dynWorker {
             //System.out.println("Json reply size: " + jsonReplies.length);
             
             for (JsonReply reply : jsonReplies) {
-                ItemPrice newPrice = new ItemPrice();
+                TypePrice newPrice = new TypePrice();
                 newPrice.setCheckedAt(reply.getBuy().getGenerated());
-                newPrice.setItemID(reply.getBuy().getForQuery().getTypes()[0].intValue());
+                newPrice.setTypeID(reply.getBuy().getForQuery().getTypes()[0].intValue());
                 newPrice.setHighBuyPrice(reply.getBuy().getMax().floatValue());
                 newPrice.setLowBuyPrice(reply.getBuy().getMin().floatValue());
                 newPrice.setHighSellPrice(reply.getSell().getMax().floatValue());
                 newPrice.setLowSellPrice(reply.getSell().getMin().floatValue());
                 persistItemPrice(newPrice);
-                result.put(newPrice.getItemID(), newPrice);
+                result.put(newPrice.getTypeID(), newPrice);
             }
             
         } catch (MalformedURLException ex) {
             Logger.getLogger(dynWorker.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
+            //TODO: Add errorhandling for HTTP 400 and 500 errors, show a notification
             Logger.getLogger(dynWorker.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
     }
     
-    public void persistItemPrice(ItemPrice ip) {
+    public void persistItemPrice(TypePrice ip) {
         EntityTransaction t = em.getTransaction();
         t.begin();
-        em.persist(ip);
+        em.merge(ip);
         t.commit();
         
     }

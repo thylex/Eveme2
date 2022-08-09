@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import org.thylex.eveme2.app.App;
-import org.thylex.eveme2.io.entities.dyn.ItemPrice;
+import org.thylex.eveme2.io.entities.dyn.TypePrice;
 import org.thylex.eveme2.io.entities.sde.IndActivityTypes;
 import org.thylex.eveme2.io.entities.sde.IndustryActivityMaterials;
 import org.thylex.eveme2.io.entities.sde.InvTypes;
@@ -76,7 +76,7 @@ public class bpValSplit extends javax.swing.JPanel {
         
         HashMap<String, Set<IndustryActivityMaterials>> sorted = sortItems(item);
         HashSet<Integer> itemIDs = new HashSet();
-        HashMap<Integer, ItemPrice> prices;
+        HashMap<Integer, TypePrice> prices;
         
         // Clean any old subcomponents
         for (Component c : right.getComponents()) {
@@ -90,7 +90,7 @@ public class bpValSplit extends javax.swing.JPanel {
         }
 
         logger.log(Level.INFO, "Checking prices for materials");
-        prices = (HashMap<Integer, ItemPrice>) app.getDynWorker().getPrices(itemIDs, Boolean.TRUE);
+        prices = (HashMap<Integer, TypePrice>) app.getDynWorker().getPrices(itemIDs, Boolean.TRUE);
         
         // Create new subcompoents
         int row = 0;

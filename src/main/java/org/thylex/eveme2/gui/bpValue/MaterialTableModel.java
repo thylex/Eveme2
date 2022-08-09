@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.AbstractTableModel;
-import org.thylex.eveme2.io.entities.dyn.ItemPrice;
+import org.thylex.eveme2.io.entities.dyn.TypePrice;
 import org.thylex.eveme2.io.entities.sde.IndustryActivityMaterials;
 
 /**
@@ -24,10 +24,10 @@ public class MaterialTableModel extends AbstractTableModel {
     private int rows = 0;
     private Object[][] tableData = null;
     private IndustryActivityMaterials rowMaterial[] = null;
-    private ItemPrice rowPrice[] = null;
+    private TypePrice rowPrice[] = null;
     
     
-    public MaterialTableModel(HashMap<String, Set<IndustryActivityMaterials>> materials, HashMap<Integer, ItemPrice> prices) {
+    public MaterialTableModel(HashMap<String, Set<IndustryActivityMaterials>> materials, HashMap<Integer, TypePrice> prices) {
         logger.log(Level.INFO, "Calculating number of rows in model");
         materials.keySet().stream().map(keyString -> materials.get(keyString)).forEachOrdered(temp -> {
             rows += temp.size();
@@ -36,7 +36,7 @@ public class MaterialTableModel extends AbstractTableModel {
         logger.log(Level.INFO, "Creating new tableData array of rows: ".concat(Integer.toString(rows)));
         tableData = new Object[rows][];
         rowMaterial = new IndustryActivityMaterials[rows];
-        rowPrice = new ItemPrice[rows];
+        rowPrice = new TypePrice[rows];
         int row = 0;
         int col = 0;
         for (String key : materials.keySet()) {
@@ -46,17 +46,25 @@ public class MaterialTableModel extends AbstractTableModel {
                 line[col++] = material.getMaterial().getTypeName();
                 line[col++] = key;
                 line[col++] = material.getQuantity();
-                if (prices.containsKey(material.getTypeID())) {
-                    line[col++] = prices.get(material.getTypeID()).getLowSellPrice();
+                if (prices.containsKey(material.getMaterial().getTypeID())) {
+                    line[col++] = prices.get(material.getMaterial().getTypeID()).getLowSellPrice();
                 } else {
                     line[col++] = 0;
                 }
                 rowMaterial[row] = material;
-                rowPrice[row] = prices.get(material.getTypeID());
+                rowPrice[row] = prices.get(material.getMaterial().getTypeID());
                 tableData[row++] = line;
             }
             
         }
+    }
+    
+    public IndustryActivityMaterials getRowMaterial(int rowIndex) {
+        return rowMaterial[rowIndex];
+    }
+    
+    public TypePrice getRowPrice(int rowIndex) {
+        return rowPrice[rowIndex];
     }
     
     @Override

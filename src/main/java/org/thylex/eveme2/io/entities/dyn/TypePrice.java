@@ -13,25 +13,27 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 
 /**
  *
  * @author thyle
  */
 @Entity
-@Table(name = "ItemPrices")
-public class ItemPrice implements Serializable {
+@Table(name = "TypePrices")
+public class TypePrice implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "PriceID")
     private Long priceId;
-    private Integer itemID;
+    private Integer typeID;
     private Float lowBuyPrice;
     private Float highBuyPrice;
     private Float lowSellPrice;
     private Float highSellPrice;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date checkedAt;
 
     public Long getPriceId() {
@@ -82,29 +84,29 @@ public class ItemPrice implements Serializable {
         this.checkedAt = checkedAt;
     }
 
-    public Integer getItemID() {
-        return itemID;
+    public Integer getTypeID() {
+        return typeID;
     }
 
-    public void setItemID(Integer itemID) {
-        this.itemID = itemID;
+    public void setTypeID(Integer typeID) {
+        this.typeID = typeID;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (itemID != null ? itemID.hashCode() : 0);
+        hash += (typeID != null ? typeID.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ItemPrice)) {
+        if (!(object instanceof TypePrice)) {
             return false;
         }
-        ItemPrice other = (ItemPrice) object;
-        if ((this.itemID == null && other.itemID != null) || (this.itemID != null && !this.itemID.equals(other.itemID))) {
+        TypePrice other = (TypePrice) object;
+        if ((this.typeID == null && other.typeID != null) || (this.typeID != null && !this.typeID.equals(other.typeID))) {
             return false;
         }
         return true;
@@ -112,7 +114,7 @@ public class ItemPrice implements Serializable {
 
     @Override
     public String toString() {
-        return "org.thylex.eveme2.db.dyn.ItemPrice[ id=" + itemID + " ]";
+        return "org.thylex.eveme2.db.dyn.ItemPrice[ id=" + typeID + " ]";
     }
     
 }
