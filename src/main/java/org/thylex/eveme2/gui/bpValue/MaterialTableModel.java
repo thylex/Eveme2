@@ -47,7 +47,7 @@ public class MaterialTableModel extends AbstractTableModel {
                 line[col++] = key;
                 line[col++] = material.getQuantity();
                 if (prices.containsKey(material.getMaterial().getTypeID())) {
-                    line[col++] = prices.get(material.getMaterial().getTypeID()).getLowSellPrice();
+                    line[col++] = prices.get(material.getMaterial().getTypeID()).getLowSellPrice() * material.getQuantity();
                 } else {
                     line[col++] = 0;
                 }

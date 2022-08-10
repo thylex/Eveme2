@@ -6,15 +6,12 @@
 package org.thylex.eveme2.io.entities.sde;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -34,8 +31,8 @@ public class InvCategories implements Serializable {
     @Basic(optional = false)
     @Column(name = "categoryID")
     private Integer categoryID;
-    @OneToMany(mappedBy = "invCategory", fetch = FetchType.LAZY)
-    private List<InvGroups> invGroups;
+//    @OneToMany(mappedBy = "invCategory", fetch = FetchType.LAZY)
+//    private List<InvGroups> invGroups;
     @Column(name = "categoryName")
     private String categoryName;
     @Column(name = "iconID")
@@ -107,12 +104,12 @@ public class InvCategories implements Serializable {
         return "org.thylex.eveme2.db.sde.InvCategories[ categoryID=" + categoryID + " ]";
     }
 
-    public List<InvGroups> getInvGroups() {
-        return invGroups;
-    }
-
-    public void setInvGroups(List<InvGroups> invGroups) {
-        this.invGroups = invGroups;
-    }
+//    public List<InvGroups> getInvGroups() {
+//        return invGroups;
+//    }
+//
+//    public void setInvGroups(List<InvGroups> invGroups) {
+//        this.invGroups = invGroups;
+//    }
     
 }

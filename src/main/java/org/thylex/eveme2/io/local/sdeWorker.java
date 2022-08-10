@@ -52,15 +52,27 @@ public class sdeWorker {
     }
     
     public InvCategories findCategoriesByName(String name){
-        Query q = em.createQuery("SELECT i FROM InvCategories i WHERE i.categoryName = :name AND i.published = 1");
+        Query q = em.createQuery("SELECT i FROM InvCategories i WHERE i.categoryName = :name AND i.published = 1 ORDER BY i.categoryName DESC");
         q.setParameter("name", name);
         return (InvCategories) q.getSingleResult();
+    }
+    
+    public String findCategoryNameById(Integer categoryID) {
+        Query q = em.createQuery("SELECT i.categoryName FROM InvCategories i WHERE i.categoryID = :id");
+        q.setParameter("id", categoryID);
+        return (String) q.getSingleResult();
     }
     
     public InvGroups findGroupByName(String name) {
         Query q = em.createQuery("SELECT i FROM InvGroups i WHERE i.groupName = :name AND i.published = 1");
         q.setParameter("name", name);
         return (InvGroups) q.getSingleResult();
+    }
+    
+    public List<InvGroups> findGroupsByCategoryID(Integer categoryID) {
+        Query q = em.createQuery("SELECT i FROM InvGroups i WHERE i.published = 1 AND i.categoryID = :id ORDER BY i.groupName DESC");
+        q.setParameter("id", categoryID);
+        return q.getResultList();
     }
     
     public InvMarketGroups findMarketGroupsByName(String name) {

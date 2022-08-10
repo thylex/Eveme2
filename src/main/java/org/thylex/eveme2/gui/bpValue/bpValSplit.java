@@ -5,7 +5,6 @@
  */
 package org.thylex.eveme2.gui.bpValue;
 
-import org.thylex.eveme2.gui.bpValue.BlueprintValuePanel;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -34,7 +33,7 @@ public class bpValSplit extends javax.swing.JPanel {
     private BlueprintValuePanel2 left = null;
     private JPanel right = null;
     private JSplitPane split = null;
-    private Logger logger = Logger.getLogger(bpValSplit.class.toString());
+    private static final Logger logger = Logger.getLogger(bpValSplit.class.toString());
     /**
      * Creates new form bpValSplit
      */
@@ -107,7 +106,8 @@ public class bpValSplit extends javax.swing.JPanel {
     private HashMap<String, Set<IndustryActivityMaterials>> sortItems(InvTypes items) {
         HashMap<String, Set<IndustryActivityMaterials>> result = new HashMap<>();
         for (IndustryActivityMaterials mat : app.getSdeWorker().findIndyMaterials(items.getTypeID(), IndActivityTypes.Manufacturing)) {
-            String key = mat.getMaterial().getInvGroup().getInvCategory().getCategoryName();
+            //String key = mat.getMaterial().getInvGroup().getInvCategory().getCategoryName();
+            String key = app.getSdeWorker().findCategoryNameById(mat.getMaterial().getInvGroup().getCategoryID());
             if (result.containsKey(key)) {
                 Set<IndustryActivityMaterials> temp = result.get(key);
                 temp.add(mat);

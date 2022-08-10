@@ -6,8 +6,6 @@
 package org.thylex.eveme2.gui.bpValue;
 
 import java.awt.BorderLayout;
-import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
@@ -18,7 +16,6 @@ import javax.swing.tree.TreeSelectionModel;
 import org.thylex.eveme2.app.App;
 import org.thylex.eveme2.io.entities.sde.InvCategories;
 import org.thylex.eveme2.io.entities.sde.InvGroups;
-import org.thylex.eveme2.io.entities.sde.InvMarketGroups;
 import org.thylex.eveme2.io.entities.sde.InvTypes;
 
 /**
@@ -93,7 +90,8 @@ public class BlueprintValuePanel2 extends javax.swing.JPanel implements TreeSele
         InvCategories bpCategory = app.getSdeWorker().findCategoriesByName("Blueprint");
         DefaultMutableTreeNode topNode = new DefaultMutableTreeNode("Blueprints");
         
-        for (InvGroups group : bpCategory.getInvGroups()) {
+        //for (InvGroups group : bpCategory.getInvGroups()) {
+        for (InvGroups group : app.getSdeWorker().findGroupsByCategoryID(bpCategory.getCategoryID())) {
             if (group.getPublished().equals(1)) {
                 DefaultMutableTreeNode groupNode = new DefaultMutableTreeNode(group.getGroupName());
                 int groupSize = 0;

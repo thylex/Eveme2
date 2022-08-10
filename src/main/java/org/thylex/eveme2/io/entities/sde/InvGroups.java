@@ -12,8 +12,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -34,11 +32,11 @@ public class InvGroups implements Serializable {
     @Basic(optional = false)
     @Column(name = "groupID")
     private Integer groupID;
-//    @Column(name = "categoryID")
-//    private Integer categoryID;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "categoryID")
-    private InvCategories invCategory;
+    @Column(name = "categoryID", updatable = false)
+    private Integer categoryID;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "categoryID")
+//    private InvCategories invCategory;
     @OneToMany(mappedBy = "invGroup", fetch = FetchType.LAZY)
     private List<InvTypes> invTypes;
     @Column(name = "groupName")
@@ -79,13 +77,13 @@ public class InvGroups implements Serializable {
         this.invTypes = invTypes;
     }
 
-//    public Integer getCategoryID() {
-//        return categoryID;
-//    }
-//
-//    public void setCategoryID(Integer categoryID) {
-//        this.categoryID = categoryID;
-//    }
+    public Integer getCategoryID() {
+        return categoryID;
+    }
+
+    public void setCategoryID(Integer categoryID) {
+        this.categoryID = categoryID;
+    }
 
     public String getGroupName() {
         return groupName;
@@ -168,18 +166,18 @@ public class InvGroups implements Serializable {
         return "org.thylex.eveme2.db.sde.InvGroups[ groupID=" + groupID + " ]";
     }
 
-    /**
-     * @return the invCategory
-     */
-    public InvCategories getInvCategory() {
-        return invCategory;
-    }
-
-    /**
-     * @param invCategory the invCategory to set
-     */
-    public void setInvCategory(InvCategories invCategory) {
-        this.invCategory = invCategory;
-    }
+//    /**
+//     * @return the invCategory
+//     */
+//    public InvCategories getInvCategory() {
+//        return invCategory;
+//    }
+//
+//    /**
+//     * @param invCategory the invCategory to set
+//     */
+//    public void setInvCategory(InvCategories invCategory) {
+//        this.invCategory = invCategory;
+//    }
     
 }

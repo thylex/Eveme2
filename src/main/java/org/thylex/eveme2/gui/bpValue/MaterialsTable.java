@@ -72,7 +72,8 @@ public class MaterialsTable extends javax.swing.JPanel {
     private HashMap<String, Set<IndustryActivityMaterials>> sortItems(InvTypes typeItem) {
         HashMap<String, Set<IndustryActivityMaterials>> result = new HashMap<>();
         for (IndustryActivityMaterials mat : app.getSdeWorker().findIndyMaterials(typeItem.getTypeID(), IndActivityTypes.Manufacturing)) {
-            String key = mat.getMaterial().getInvGroup().getInvCategory().getCategoryName();
+            //String key = mat.getMaterial().getInvGroup().getInvCategory().getCategoryName();
+            String key = app.getSdeWorker().findCategoryNameById(mat.getMaterial().getInvGroup().getCategoryID());
             if (result.containsKey(key)) {
                 Set<IndustryActivityMaterials> temp = result.get(key);
                 temp.add(mat);
