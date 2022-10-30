@@ -52,7 +52,7 @@ public class sdeWorker {
     }
     
     public InvCategories findCategoriesByName(String name){
-        Query q = em.createQuery("SELECT i FROM InvCategories i WHERE i.categoryName = :name AND i.published = 1 ORDER BY i.categoryName DESC");
+        Query q = em.createQuery("SELECT i FROM InvCategories i WHERE i.categoryName = :name AND i.published = 1 ORDER BY i.categoryName ASC");
         q.setParameter("name", name);
         return (InvCategories) q.getSingleResult();
     }
@@ -70,7 +70,7 @@ public class sdeWorker {
     }
     
     public List<InvGroups> findGroupsByCategoryID(Integer categoryID) {
-        Query q = em.createQuery("SELECT i FROM InvGroups i WHERE i.published = 1 AND i.categoryID = :id ORDER BY i.groupName DESC");
+        Query q = em.createQuery("SELECT i FROM InvGroups i WHERE i.published = 1 AND i.categoryID = :id ORDER BY i.groupName ASC");
         q.setParameter("id", categoryID);
         return q.getResultList();
     }

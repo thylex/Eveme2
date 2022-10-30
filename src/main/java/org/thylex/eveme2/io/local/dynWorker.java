@@ -81,6 +81,7 @@ public class dynWorker {
     
     private Map<Integer, TypePrice> checkEVEPraisal(Set<Integer> typeIDs) {
         HashMap<Integer, TypePrice> result = new HashMap();
+        String baseURL = "https://evepraisal.com/appraisal/structured.json";
         
         return result;
     }
