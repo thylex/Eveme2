@@ -33,7 +33,7 @@ public class bpValSplit extends javax.swing.JPanel {
     private BlueprintValuePanel2 left = null;
     private JPanel right = null;
     private JSplitPane split = null;
-    private static final Logger logger = Logger.getLogger(bpValSplit.class.toString());
+    private static final Logger logger = Logger.getLogger(bpValSplit.class.getName());
     /**
      * Creates new form bpValSplit
      */

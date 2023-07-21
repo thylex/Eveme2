@@ -1,2 +1,4 @@
 *.class
 target\*
+*.jar
+target/EVEME2-1.0-SNAPSHOT.jar

@@ -31,9 +31,11 @@ import org.thylex.eveme2.io.online.evemarketer.JsonReply;
  */
 public class dynWorker {
     private EntityManager em = null;
+    private static final Logger logger = Logger.getLogger(dynWorker.class.getName());
     
     public dynWorker(EntityManager worker) {
         this.em = worker;
+        System.out.println(dynWorker.class.toString());
     }
     
 //    public TypePrice findItemPriceByID(Integer itemID) {
@@ -60,10 +62,16 @@ public class dynWorker {
         HashMap<Integer, TypePrice> result = new HashMap();
         HashSet<Integer> notFound = new HashSet();
         
+        if (refreshOldAndNotFound) {
+            logger.fine("Looking for item prices, WILL check externally");
+        } else {
+            logger.info("Looking for item prices, will NOT check externally");
+        }
+        
         for(Integer id : typeIDs) {
             TypePrice temp = findPriceByTypeID(id);
             if (temp == null) {
-                //System.out.println("No cached price found for ID: " + id.toString());
+                logger.info("No cached price found for ID: " + id.toString());
                 // Add ID to check with EVEMarketer later
                 notFound.add(id);
             } else {
@@ -73,15 +81,9 @@ public class dynWorker {
         
         if (refreshOldAndNotFound && (! notFound.isEmpty())) {
             //System.out.println("Have items to check with EVEMarketer: " + notFound.size());
+            logger.info("Checking prices externally " + notFound.size());
             result.putAll(checkEVEMarketer(notFound));
         }
-        
-        return result;
-    }
-    
-    private Map<Integer, TypePrice> checkEVEPraisal(Set<Integer> typeIDs) {
-        HashMap<Integer, TypePrice> result = new HashMap();
-        String baseURL = "https://evepraisal.com/appraisal/structured.json";
         
         return result;
     }
@@ -89,6 +91,8 @@ public class dynWorker {
     private Map<Integer, TypePrice> checkEVEMarketer(Set<Integer> typeIDs) {
         HashMap<Integer, TypePrice> result = new HashMap();
         String baseURL = "https://api.evemarketer.com/ec/marketstat/json";
+        
+        logger.fine("Checking prices with EVEMarketer");
         
         // Build URL suffix
         StringBuilder itemString = new StringBuilder("?typeid=");
@@ -101,7 +105,7 @@ public class dynWorker {
         webURL = webURL.substring(0, (webURL.length() -1));
         // Limit to The Forge region for now
         webURL = webURL + "&regionlimit=10000002";
-        //System.out.println(webURL);
+        logger.fine(webURL);
         
         try {
             URL url = new URL(webURL);
@@ -136,6 +140,7 @@ public class dynWorker {
                 newPrice.setHighSellPrice(reply.getSell().getMax().floatValue());
                 newPrice.setLowSellPrice(reply.getSell().getMin().floatValue());
                 persistItemPrice(newPrice);
+                logger.fine("External price found for ItermID: " + newPrice.getTypeID().toString());
                 result.put(newPrice.getTypeID(), newPrice);
             }
             
@@ -153,7 +158,7 @@ public class dynWorker {
         t.begin();
         em.merge(ip);
         t.commit();
-        
+        logger.fine("Price added to dynamic DB for ItemID: " + ip.getTypeID().toString());
     }
     
     public void Close() {

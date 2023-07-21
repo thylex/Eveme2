@@ -19,8 +19,8 @@ import org.thylex.eveme2.io.entities.sde.IndustryActivityMaterials;
  */
 public class MaterialTableModel extends AbstractTableModel {
 
-    private static final Logger logger = Logger.getLogger(MaterialTableModel.class.toString());
-    private static final String[] columnNames = {"Name", "Type", "Quantity", "Price"};
+    private static final Logger logger = Logger.getLogger(MaterialTableModel.class.getName());
+    private static final String[] columnNames = {"Name", "Type", "Quantity", "ISK/u", "ISK Tot"};
     private int rows = 0;
     private Object[][] tableData = null;
     private IndustryActivityMaterials rowMaterial[] = null;
@@ -41,14 +41,16 @@ public class MaterialTableModel extends AbstractTableModel {
         int col = 0;
         for (String key : materials.keySet()) {
             for (IndustryActivityMaterials material : materials.get(key)) {
-                Object[] line = new Object[4];
+                Object[] line = new Object[5];
                 col = 0;
                 line[col++] = material.getMaterial().getTypeName();
                 line[col++] = key;
                 line[col++] = material.getQuantity();
                 if (prices.containsKey(material.getMaterial().getTypeID())) {
+                    line[col++] = prices.get(material.getMaterial().getTypeID()).getLowSellPrice();
                     line[col++] = prices.get(material.getMaterial().getTypeID()).getLowSellPrice() * material.getQuantity();
                 } else {
+                    line[col++] = 0;
                     line[col++] = 0;
                 }
                 rowMaterial[row] = material;

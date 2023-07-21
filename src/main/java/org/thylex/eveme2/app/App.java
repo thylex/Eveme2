@@ -6,10 +6,13 @@
 package org.thylex.eveme2.app;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import org.thylex.eveme2.io.local.Db;
 import org.thylex.eveme2.io.local.dynWorker;
@@ -26,8 +29,12 @@ public class App {
     private EvemeSettings Settings = null;
     private sdeWorker SDE = null;
     private dynWorker DYN = null;
-
+    private static final LogManager logMgr = LogManager.getLogManager();
+    private Logger logger;
+    
     public App() {
+        logger = Logger.getLogger(App.class.getName());
+        
         // Set base directory for all application related files, create if it doesn't exist
         File AppDir = null;
         if ("Windows 10".equals(System.getProperty("os.name"))) {

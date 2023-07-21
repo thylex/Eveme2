@@ -6,6 +6,7 @@
 package org.thylex.eveme2.io.local;
 
 import java.util.List;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import org.thylex.eveme2.io.entities.sde.ChrRaces;
@@ -22,6 +23,7 @@ import org.thylex.eveme2.io.entities.sde.InvTypes;
  */
 public class sdeWorker {
     private EntityManager em = null;
+    private static final Logger logger = Logger.getLogger(sdeWorker.class.getName());
     
     public sdeWorker(EntityManager worker) {
         this.em = worker;

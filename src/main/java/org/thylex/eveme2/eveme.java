@@ -7,7 +7,6 @@ package org.thylex.eveme2;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.thylex.eveme2.app.App;
 
@@ -16,7 +15,10 @@ import org.thylex.eveme2.app.App;
  * @author thyle
  */
 public class eveme {
-
+    static {
+        String loggerPath = App.class.getClassLoader().getResource("logging.properties").getFile();
+        System.setProperty("java.util.logging.config.file", loggerPath);
+    }
     /**
      * @param args the command line arguments
      */

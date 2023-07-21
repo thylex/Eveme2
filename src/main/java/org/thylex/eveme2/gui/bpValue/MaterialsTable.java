@@ -27,7 +27,7 @@ public class MaterialsTable extends javax.swing.JPanel {
 
     private InvTypes bp = null;
     private App app = null;
-    private static final Logger logger = Logger.getLogger(MaterialsTable.class.toString());
+    private static final Logger logger = Logger.getLogger(MaterialsTable.class.getName());
     private JTable materialTable = null;
     /**
      * Creates new form MaterialsTable
